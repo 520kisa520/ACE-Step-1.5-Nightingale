@@ -1,0 +1,136 @@
+/* ACE-Step Futuristic Neon UI */
+
+:root {
+    --healing-bg: #050816;
+    --healing-bg-alt: #0a1024;
+    --healing-surface: rgba(12, 18, 40, 0.72);
+    --healing-surface-strong: rgba(14, 22, 48, 0.92);
+    --healing-accent: #7c4dff;
+    --healing-accent-2: #00d4ff;
+    --healing-accent-soft: rgba(124, 77, 255, 0.18);
+    --healing-text: #eef2ff;
+    --healing-muted: #94a3c1;
+    --healing-border: rgba(122, 138, 180, 0.22);
+    --healing-glow: 0 0 24px rgba(124, 77, 255, 0.35);
+}
+
+.gradio-container {
+    background:
+        radial-gradient(circle at top left, rgba(124, 77, 255, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(0, 212, 255, 0.18), transparent 24%),
+        linear-gradient(160deg, var(--healing-bg) 0%, var(--healing-bg-alt) 100%) !important;
+    color: var(--healing-text) !important;
+}
+
+.main-header {
+    padding: 1rem 1rem 0.5rem !important;
+    margin-bottom: 1rem !important;
+    position: relative;
+    text-align: center;
+}
+
+.main-header::after {
+    content: "";
+    display: block;
+    height: 1px;
+    margin-top: 0.9rem;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.8), rgba(124, 77, 255, 0.85), transparent);
+    box-shadow: var(--healing-glow);
+}
+
+.main-header .logo-mark {
+    width: 128px;
+    max-width: 36vw;
+    margin: 0 auto 0.7rem;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.25));
+}
+
+.main-header h1 {
+    font-weight: 800 !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase;
+    color: #f7f7ff !important;
+    font-size: 1.85rem !important;
+    text-shadow: 0 0 18px rgba(124, 77, 255, 0.45);
+}
+
+.main-header p {
+    color: var(--healing-muted) !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.1em !important;
+    margin-top: 0.2rem;
+}
+
+button.primary, .primary {
+    background: linear-gradient(135deg, var(--healing-accent) 0%, var(--healing-accent-2) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: var(--healing-glow);
+    color: white !important;
+}
+
+button.primary:hover, .primary:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.35), 0 0 26px rgba(124, 77, 255, 0.45);
+}
+
+.section-header, .accordion .label-wrap {
+    background: linear-gradient(90deg, rgba(124, 77, 255, 0.18), rgba(0, 212, 255, 0.1)) !important;
+}
+
+.tabs button.selected {
+    border-color: var(--healing-accent-2) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 -2px 0 var(--healing-accent-2);
+}
+
+.block, .form, .panel, .gradio-container .gr-box {
+    border-color: var(--healing-border) !important;
+    background: var(--healing-surface) !important;
+    backdrop-filter: blur(18px);
+}
+
+textarea, input, select, .wrap textarea, .wrap input, .wrap select {
+    background: rgba(7, 12, 28, 0.78) !important;
+    color: var(--healing-text) !important;
+    border-color: rgba(122, 138, 180, 0.24) !important;
+}
+
+textarea::placeholder, input::placeholder {
+    color: #66749a !important;
+}
+
+.healing-guide {
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.14), rgba(0, 212, 255, 0.08));
+    border: 1px solid rgba(0, 212, 255, 0.18);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin: 0 0 16px 0;
+    line-height: 1.7;
+    color: var(--healing-text);
+    font-size: 0.94rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.healing-guide strong {
+    color: #8be9ff;
+    font-weight: 600;
+}
+
+code {
+    background: rgba(2, 6, 23, 0.85);
+    color: #9ef0ff;
+    border: 1px solid rgba(0, 212, 255, 0.16);
+    border-radius: 6px;
+    padding: 0.08rem 0.35rem;
+}
+
+.gradio-container ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.gradio-container ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(124, 77, 255, 0.7), rgba(0, 212, 255, 0.7));
+    border-radius: 999px;
+}
