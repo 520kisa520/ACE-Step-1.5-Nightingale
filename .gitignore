@@ -6,6 +6,9 @@ Folder.jpg
 
 
 data/
+# Frontend source data (genre catalog + healing presets) must be tracked
+!ui/ace-step-ui/data/
+!ui/ace-step-ui/data/**
 *.mp3
 *.wav
 *.pkf
