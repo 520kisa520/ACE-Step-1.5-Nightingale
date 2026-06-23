@@ -280,7 +280,6 @@ cd .. && npm run dev
 <p align="center">
     <strong>上海脑舒科技有限公司 · SOOTHE</strong><br>
     <strong>上海音乐学院人工智能音乐疗愈重点实验室</strong><br>
-    <a href="https://www.soothebci.com">www.soothebci.com</a><br>
     <em>艺术学 × 医学 × 工学 · 视听疗愈 AI 研究与实践</em><br>
     2026 年 6 月
 </p>
