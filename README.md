@@ -233,7 +233,7 @@ ACE-Step-1.5-Nightingale/
 
 - [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) — 高效开源音乐基础模型（ACE Studio & StepFun）
 
-特别感谢：
+开发单位：
 - **上海音乐学院人工智能音乐疗愈重点实验室** — 疗愈音乐语料库与科研支持
 - **上海脑舒科技有限公司（SOOTHE）** — HRV 情绪解码算法与产品化支持
 
@@ -246,9 +246,8 @@ ACE-Step-1.5-Nightingale/
 ---
 
 <p align="center">
-    <strong>上海脑舒科技有限公司 · SOOTHE</strong><br>
     <strong>上海音乐学院人工智能音乐疗愈重点实验室</strong><br>
-    <a href="https://www.soothebci.com">www.soothebci.com</a><br>
+    <strong>上海脑舒科技有限公司 · SOOTHE</strong><br>
     <em>艺术学 × 医学 × 工学 · 视听疗愈 AI 研究与实践</em><br>
     2026 年 6 月
 </p>
