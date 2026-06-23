@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "title": "Nightingale v1.0 Released",
+    "summary": "AI-powered music therapy platform based on ACE-Step 1.5 is now available.",
+    "date": "2026-06-23",
+    "category": "release"
+  },
+  {
+    "id": "2",
+    "title": "ACE-Step 1.5 XL Model Support",
+    "summary": "Now supporting the 4B parameter XL model for higher quality healing music generation.",
+    "date": "2026-04-02",
+    "category": "feature"
+  }
+]
