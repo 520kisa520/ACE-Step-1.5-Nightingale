@@ -2,9 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Song } from '../types';
 import { useI18n } from '../context/I18nContext';
 import {
-    Video,
     Edit3,
-    Layers,
     Repeat,
     ListPlus,
     Download,
@@ -19,9 +17,7 @@ interface SongDropdownMenuProps {
     isOwner?: boolean;
     position?: 'left' | 'right';
     direction?: 'up' | 'down';
-    onCreateVideo?: () => void;
     onEditAudio?: () => void;
-    onExtractStems?: () => void;
     onReusePrompt?: () => void;
     onAddToPlaylist?: () => void;
     onDownload?: () => void;
@@ -66,9 +62,7 @@ export const SongDropdownMenu: React.FC<SongDropdownMenuProps> = ({
     isOwner = false,
     position = 'right',
     direction = 'down',
-    onCreateVideo,
     onEditAudio,
-    onExtractStems,
     onReusePrompt,
     onAddToPlaylist,
     onDownload,
@@ -174,11 +168,6 @@ export const SongDropdownMenu: React.FC<SongDropdownMenuProps> = ({
             onClick={(e) => e.stopPropagation()}
         >
             {/* Creative Actions */}
-            <MenuItem
-                icon={<Video size={14} />}
-                label={t('createVideo')}
-                onClick={() => handleAction(onCreateVideo)}
-            />
             {isOwner && (
                 <MenuItem
                     icon={<Edit3 size={14} />}
@@ -186,32 +175,11 @@ export const SongDropdownMenu: React.FC<SongDropdownMenuProps> = ({
                     onClick={onEditAudio ? () => handleAction(onEditAudio) : handleEditAudio}
                 />
             )}
-            <MenuItem
-                icon={<Layers size={14} />}
-                label={t('extractStems')}
-                onClick={onExtractStems ? () => handleAction(onExtractStems) : handleExtractStems}
-            />
             {onReusePrompt && (
                 <MenuItem
                     icon={<Repeat size={14} />}
                     label={t('reusePrompt')}
                     onClick={() => handleAction(onReusePrompt)}
-                />
-            )}
-            {onUseAsReference && (
-                <MenuItem
-                    icon={<Layers size={14} />}
-                    label={t('useAsReference')}
-                    onClick={() => handleAction(onUseAsReference)}
-                    disabled={!song.audioUrl}
-                />
-            )}
-            {onCoverSong && (
-                <MenuItem
-                    icon={<Layers size={14} />}
-                    label={t('coverSong')}
-                    onClick={() => handleAction(onCoverSong)}
-                    disabled={!song.audioUrl}
                 />
             )}
 

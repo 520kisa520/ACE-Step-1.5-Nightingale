@@ -195,7 +195,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <div className="flex-1 bg-zinc-50 dark:bg-[#0a0a0a] h-full overflow-y-auto custom-scrollbar">
+    <div className="flex-1 bg-healing-bg-card dark:bg-tech-bg-card h-full overflow-y-auto custom-scrollbar">
       <div className="max-w-[1400px] mx-auto px-6 py-6 pb-24 lg:pb-32">
         {/* Search Input */}
         <div className="mb-8">

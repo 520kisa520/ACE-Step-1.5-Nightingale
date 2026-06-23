@@ -1,6 +1,7 @@
 import React from 'react';
-import { Leaf } from 'lucide-react';
+import { Bird } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
+import { useTheme } from '../context/ThemeContext';
 import { HEALING_MODE } from '../data/healingPresets';
 
 interface LabBrandingHeaderProps {
@@ -13,41 +14,36 @@ export const LabBrandingHeader: React.FC<LabBrandingHeaderProps> = ({
   className = '',
 }) => {
   const { t } = useI18n();
+  const { mode } = useTheme();
 
   if (!HEALING_MODE) return null;
 
   return (
     <div
-      className={`rounded-2xl border border-[#e2ddd4] dark:border-white/10 bg-gradient-to-br from-[#faf8f5] to-[#f0ebe3] dark:from-zinc-900/80 dark:to-zinc-800/60 px-4 py-3 ${className}`}
+      className={`rounded-2xl border border-healing-primary/20 dark:border-tech-primary/20 bg-gradient-to-br from-healing-bg-card to-healing-bg-surface dark:from-tech-bg-card dark:to-tech-bg-surface px-4 py-3 ${className}`}
     >
       <div className="flex items-start gap-3">
-        <div
-          className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7A9E8E] to-[#5C7A6E] flex items-center justify-center flex-shrink-0 shadow-sm"
-          aria-hidden
-        >
-          <Leaf className="w-5 h-5 text-white" />
-        </div>
         <div className="min-w-0 flex-1">
           <h1
-            className={`font-semibold text-[#3D4540] dark:text-white tracking-wide ${
-              compact ? 'text-sm' : 'text-base md:text-lg'
+            className={`font-bold text-healing-text-primary dark:text-tech-text-primary tracking-wide ${
+              compact ? 'text-base' : 'text-lg md:text-xl'
             }`}
           >
-            {t('brandProductName')} · {t('create')}
+            夜莺 · 疗愈音乐生成
           </h1>
           {!compact && (
             <>
-              <p className="text-xs md:text-sm text-[#5C7A6E] dark:text-[#B8CFC4] font-medium mt-0.5 leading-snug">
-                {t('labFullName')}
+              <p className="text-xs md:text-sm text-healing-text-secondary dark:text-tech-text-secondary font-medium mt-0.5 leading-snug">
+                上海音乐学院人工智能音乐疗愈重点实验室
               </p>
-              <p className="text-[11px] text-[#8A9490] dark:text-zinc-400 mt-1 leading-relaxed">
-                {t('labTagline')}
+              <p className="text-[11px] text-healing-text-muted dark:text-tech-text-muted mt-1 leading-relaxed">
+                艺术学 × 医学 × 工学 · 视听疗愈 AI 研究与实践平台
               </p>
             </>
           )}
           {compact && (
-            <p className="text-[11px] text-[#8A9490] dark:text-zinc-400 mt-0.5 truncate">
-              {t('labShortName')}
+            <p className="text-[11px] text-healing-text-muted dark:text-tech-text-muted mt-0.5 truncate">
+              上海音乐学院人工智能音乐疗愈重点实验室
             </p>
           )}
         </div>

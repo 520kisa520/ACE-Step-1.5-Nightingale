@@ -16,7 +16,6 @@ interface LibraryViewProps {
   onCreatePlaylist: () => void;
   onSelectPlaylist: (playlist: Playlist) => void;
   onAddToPlaylist: (song: Song) => void;
-  onOpenVideo?: (song: Song) => void;
   onReusePrompt?: (song: Song) => void;
   onDeleteSong?: (song: Song) => void;
   onDeleteReferenceTrack?: (trackId: string) => void;
@@ -42,7 +41,6 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     onCreatePlaylist,
     onSelectPlaylist,
     onAddToPlaylist,
-    onOpenVideo,
     onReusePrompt,
     onDeleteSong,
     onDeleteReferenceTrack,
@@ -67,12 +65,12 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
     return (
         <>
-        <div className="flex-1 bg-white dark:bg-black overflow-y-auto custom-scrollbar p-6 lg:p-10 pb-32 transition-colors duration-300">
+        <div className="flex-1 bg-healing-bg-card dark:bg-tech-bg-card overflow-y-auto custom-scrollbar p-6 lg:p-10 pb-32 transition-colors duration-300">
              <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">{t('yourLibrary')}</h1>
                 <button 
                     onClick={onCreatePlaylist}
-                    className="flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 hover:bg-zinc-800 dark:hover:bg-zinc-700 text-white px-4 py-2 rounded-full font-medium transition-colors shadow-lg shadow-zinc-900/10 dark:shadow-none"
+                    className="flex items-center gap-2 bg-healing-primary dark:bg-tech-primary hover:bg-healing-primary-dark dark:hover:bg-tech-primary-dark text-white px-4 py-2 rounded-full font-medium transition-colors shadow-lg shadow-zinc-900/10 dark:shadow-none"
                 >
                     <Plus size={18} />
                     <span>{t('newPlaylist')}</span>
@@ -149,7 +147,6 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                                         isOpen={shareSong?.id === song.id}
                                         onClose={() => setShareSong(null)}
                                         isOwner={user ? song.userId === user.id : false}
-                                        onCreateVideo={() => onOpenVideo?.(song)}
                                         onReusePrompt={() => onReusePrompt?.(song)}
                                         onAddToPlaylist={() => onAddToPlaylist(song)}
                                         onDelete={() => onDeleteSong?.(song)}
@@ -165,7 +162,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
              )}
              {activeTab === 'liked' && (
                  <div>
-                    <div className="bg-gradient-to-b from-indigo-500/10 to-zinc-50 dark:from-indigo-800/50 dark:to-zinc-900/50 p-6 rounded-xl flex items-end gap-6 mb-8 cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors group border border-zinc-200 dark:border-white/5" onClick={() => likedSongs.length > 0 && onPlaySong(likedSongs[0], likedSongs)}>
+                    <div className="bg-gradient-to-b from-indigo-500/10 to-healing-bg-surface dark:from-indigo-800/50 dark:to-tech-bg-surface p-6 rounded-xl flex items-end gap-6 mb-8 cursor-pointer hover:bg-healing-bg-hover dark:hover:bg-tech-bg-hover transition-colors group border border-zinc-200 dark:border-white/5" onClick={() => likedSongs.length > 0 && onPlaySong(likedSongs[0], likedSongs)}>
                          <div className="w-40 h-40 bg-gradient-to-br from-indigo-500 to-purple-400 rounded shadow-2xl flex items-center justify-center">
                             <Heart fill="white" size={64} className="text-white" />
                          </div>
@@ -217,7 +214,6 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                                         isOpen={shareSong?.id === song.id}
                                         onClose={() => setShareSong(null)}
                                         isOwner={user ? song.userId === user.id : false}
-                                        onCreateVideo={() => onOpenVideo?.(song)}
                                         onReusePrompt={() => onReusePrompt?.(song)}
                                         onAddToPlaylist={() => onAddToPlaylist(song)}
                                         onDelete={() => onDeleteSong?.(song)}
@@ -234,8 +230,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
              {activeTab === 'playlists' && (
                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                      {playlists.map((playlist) => (
-                         <div key={playlist.id} className="bg-white dark:bg-zinc-900/40 p-4 rounded-lg border border-zinc-200 dark:border-white/5 hover:border-zinc-300 dark:hover:border-white/10 hover:shadow-lg dark:hover:bg-zinc-900 transition-all group cursor-pointer" onClick={() => onSelectPlaylist(playlist)}>
-                             <div className="relative aspect-square mb-4 rounded-md overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                         <div key={playlist.id} className="bg-healing-bg-card dark:bg-tech-bg-card p-4 rounded-lg border border-zinc-200 dark:border-white/5 hover:border-zinc-300 dark:hover:border-white/10 hover:shadow-lg dark:hover:bg-tech-bg-hover transition-all group cursor-pointer" onClick={() => onSelectPlaylist(playlist)}>
+                             <div className="relative aspect-square mb-4 rounded-md overflow-hidden bg-healing-bg-hover dark:bg-tech-bg-hover flex items-center justify-center">
                                  {playlist.coverUrl ? (
                                      <img src={playlist.coverUrl} className="w-full h-full object-cover" alt={playlist.name} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                                  ) : (
@@ -254,8 +250,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                         <div className="text-sm text-zinc-500 dark:text-zinc-400">No uploads yet.</div>
                     ) : (
                         referenceTracks.map((track) => (
-                            <div key={track.id} className="flex items-center gap-4 p-3 rounded-lg border border-zinc-200 dark:border-white/5 bg-white dark:bg-zinc-900/40">
-                                <div className="w-10 h-10 rounded bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                            <div key={track.id} className="flex items-center gap-4 p-3 rounded-lg border border-zinc-200 dark:border-white/5 bg-healing-bg-card dark:bg-tech-bg-card">
+                                <div className="w-10 h-10 rounded bg-healing-bg-hover dark:bg-tech-bg-hover flex items-center justify-center">
                                     <Music size={18} className="text-zinc-500 dark:text-zinc-400" />
                                 </div>
                                 <div className="flex-1 min-w-0">

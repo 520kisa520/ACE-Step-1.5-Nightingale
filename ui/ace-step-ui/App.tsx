@@ -6,7 +6,6 @@ import { RightSidebar } from './components/RightSidebar';
 import { Player } from './components/Player';
 import { LibraryView } from './components/LibraryView';
 import { CreatePlaylistModal, AddToPlaylistModal } from './components/PlaylistModals';
-import { VideoGeneratorModal } from './components/VideoGeneratorModal';
 import { UsernameModal } from './components/UsernameModal';
 import { UserProfile } from './components/UserProfile';
 import { SettingsModal } from './components/SettingsModal';
@@ -16,6 +15,7 @@ import { generateApi, songsApi, playlistsApi, getAudioUrl } from './services/api
 import { useAuth } from './context/AuthContext';
 import { useResponsive } from './context/ResponsiveContext';
 import { I18nProvider, useI18n } from './context/I18nContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { List } from 'lucide-react';
 import { PlaylistDetail } from './components/PlaylistDetail';
 import { Toast, ToastType } from './components/Toast';
@@ -89,10 +89,6 @@ function AppContent() {
   const [isCreatePlaylistModalOpen, setIsCreatePlaylistModalOpen] = useState(false);
   const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] = useState(false);
   const [songToAddToPlaylist, setSongToAddToPlaylist] = useState<Song | null>(null);
-
-  // Video Modal
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [songForVideo, setSongForVideo] = useState<Song | null>(null);
 
   // Settings Modal
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -667,20 +663,21 @@ function AppContent() {
         lyrics: s.lyrics,
         style: s.style,
         coverUrl: `https://picsum.photos/seed/${s.id}/400/400`,
-        duration: s.duration && s.duration > 0 ? `${Math.floor(s.duration / 60)}:${String(Math.floor(s.duration % 60)).padStart(2, '0')}` : '0:00',
-        createdAt: new Date(s.created_at),
+        duration: s.duration && typeof s.duration === 'number' && s.duration > 0 ? `${Math.floor(s.duration / 60)}:${String(Math.floor(s.duration % 60)).padStart(2, '0')}` : '0:00',
+        createdAt: new Date(s.created_at || s.createdAt || Date.now()),
         tags: s.tags || [],
-        audioUrl: getAudioUrl(s.audio_url, s.id),
-        isPublic: s.is_public,
-        likeCount: s.like_count || 0,
-        viewCount: s.view_count || 0,
-        userId: s.user_id,
+        audioUrl: getAudioUrl(s.audio_url || s.audioUrl, s.id),
+        isPublic: s.is_public ?? s.isPublic ?? false,
+        likeCount: s.like_count || s.likeCount || 0,
+        viewCount: s.view_count || s.viewCount || 0,
+        userId: s.user_id || s.userId,
         creator: s.creator,
         ditModel: s.ditModel,
         generationParams: (() => {
           try {
-            if (!s.generation_params) return undefined;
-            return typeof s.generation_params === 'string' ? JSON.parse(s.generation_params) : s.generation_params;
+            const params = s.generation_params || s.generationParams;
+            if (!params) return undefined;
+            return typeof params === 'string' ? JSON.parse(params) : params;
           } catch {
             return undefined;
           }
@@ -1208,15 +1205,6 @@ function AppContent() {
     window.history.pushState({}, '', '/library');
   };
 
-  const openVideoGenerator = (song: Song) => {
-    if (isPlaying) {
-      setIsPlaying(false);
-      if (audioRef.current) audioRef.current.pause();
-    }
-    setSongForVideo(song);
-    setIsVideoModalOpen(true);
-  };
-
   // Handle username setup
   const handleUsernameSubmit = async (username: string) => {
     await setupUser(username);
@@ -1229,7 +1217,7 @@ function AppContent() {
       case 'library': {
         const allSongs = user ? songs.filter(s => s.userId === user.id) : [];
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <LibraryView
               allSongs={allSongs}
               likedSongs={songs.filter(s => likedSongIds.has(s.id))}
@@ -1242,7 +1230,6 @@ function AppContent() {
               }}
               onSelectPlaylist={(p) => handleNavigateToPlaylist(p.id)}
               onAddToPlaylist={openAddToPlaylistModal}
-              onOpenVideo={openVideoGenerator}
               onReusePrompt={handleReuse}
               onDeleteSong={handleDeleteSong}
               onDeleteReferenceTrack={handleDeleteReferenceTrack}
@@ -1254,7 +1241,7 @@ function AppContent() {
       case 'profile':
         if (!viewingUsername) return null;
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <UserProfile
               username={viewingUsername}
               onBack={handleBackFromProfile}
@@ -1272,7 +1259,7 @@ function AppContent() {
       case 'playlist':
         if (!viewingPlaylistId) return null;
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <PlaylistDetail
               playlistId={viewingPlaylistId}
               onBack={handleBackFromPlaylist}
@@ -1289,7 +1276,7 @@ function AppContent() {
       case 'song':
         if (!viewingSongId) return null;
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <SongProfile
               songId={viewingSongId}
               onBack={handleBackFromSong}
@@ -1305,7 +1292,7 @@ function AppContent() {
 
       case 'search':
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <SearchPage
               onPlaySong={playSong}
               currentSong={currentSong}
@@ -1319,14 +1306,14 @@ function AppContent() {
 
       case 'training':
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <TrainingPanel />
           </div>
         );
 
       case 'news':
         return (
-          <div className="w-full h-full healing-bg-main backdrop-blur-xl">
+          <div className="w-full h-full bg-healing-bg-card dark:bg-tech-bg-card backdrop-blur-xl">
             <NewsPage />
           </div>
         );
@@ -1335,10 +1322,10 @@ function AppContent() {
       default:
         return (
           <div className="flex h-full overflow-hidden relative w-full">
-            {/* Create Panel */}
+            {/* Create Panel - Main Area */}
             <div className={`
               ${mobileShowList ? 'hidden md:block' : 'w-full'}
-              md:w-[320px] lg:w-[360px] flex-shrink-0 h-full border-r healing-border bg-healing-bg-card backdrop-blur-xl relative z-10 transition-colors duration-300
+              flex-1 h-full border-r border-healing-primary/20 dark:border-tech-primary/20 bg-healing-bg-surface dark:bg-tech-bg-surface backdrop-blur-xl relative z-10 transition-colors duration-300
             `}>
               <CreatePanel
                 onGenerate={handleGenerate}
@@ -1350,59 +1337,60 @@ function AppContent() {
               />
             </div>
 
-            {/* Song List */}
+            {/* Right Panel Container - Combined Song List and Details */}
             <div className={`
               ${!mobileShowList ? 'hidden md:flex' : 'flex'}
-              flex-1 flex-col h-full overflow-hidden healing-bg-main transition-colors duration-300
+              w-[320px] flex-shrink-0 flex-col h-full overflow-hidden border-l border-healing-primary/20 dark:border-tech-primary/20 bg-healing-bg-card dark:bg-tech-bg-card transition-colors duration-300
             `}>
-              <SongList
-                songs={songs}
-                currentSong={currentSong}
-                selectedSong={selectedSong}
-                likedSongIds={likedSongIds}
-                isPlaying={isPlaying}
-                referenceTracks={referenceTracks}
-                onPlay={playSong}
-                onSelect={(s) => {
-                  setSelectedSong(s);
-                  setShowRightSidebar(true);
-                }}
-                onToggleLike={toggleLike}
-                onAddToPlaylist={openAddToPlaylistModal}
-                onOpenVideo={openVideoGenerator}
-                onShowDetails={handleShowDetails}
-                onNavigateToProfile={handleNavigateToProfile}
-                onReusePrompt={handleReuse}
-                onDelete={handleDeleteSong}
-                onDeleteMany={handleDeleteSongs}
-                onUseAsReference={handleUseAsReference}
-                onCoverSong={handleCoverSong}
-                onUseUploadAsReference={handleUseUploadAsReference}
-                onCoverUpload={handleCoverUpload}
-                onSongUpdate={handleSongUpdate}
-              />
-            </div>
-
-            {/* Right Sidebar */}
-            {showRightSidebar && (
-              <div className="hidden xl:block w-[360px] flex-shrink-0 h-full healing-bg-card backdrop-blur-xl relative z-10 border-l healing-border transition-colors duration-300">
-                <RightSidebar
-                  song={selectedSong}
-                  onClose={() => setShowRightSidebar(false)}
-                  onOpenVideo={() => selectedSong && openVideoGenerator(selectedSong)}
-                  onReuse={handleReuse}
-                  onSongUpdate={handleSongUpdate}
-                  onNavigateToProfile={handleNavigateToProfile}
-                  onNavigateToSong={handleNavigateToSong}
-                  isLiked={selectedSong ? likedSongIds.has(selectedSong.id) : false}
-                  onToggleLike={toggleLike}
-                  onDelete={handleDeleteSong}
-                  onPlay={playSong}
-                  isPlaying={isPlaying}
+              {/* Song List */}
+              <div className={showRightSidebar && selectedSong ? 'flex-1 overflow-hidden' : 'flex-1 overflow-hidden'}>
+                <SongList
+                  songs={songs}
                   currentSong={currentSong}
+                  selectedSong={selectedSong}
+                  likedSongIds={likedSongIds}
+                  isPlaying={isPlaying}
+                  referenceTracks={referenceTracks}
+                  onPlay={playSong}
+                  onSelect={(s) => {
+                    setSelectedSong(s);
+                    setShowRightSidebar(true);
+                  }}
+                  onToggleLike={toggleLike}
+                  onAddToPlaylist={openAddToPlaylistModal}
+                  onShowDetails={handleShowDetails}
+                  onNavigateToProfile={handleNavigateToProfile}
+                  onReusePrompt={handleReuse}
+                  onDelete={handleDeleteSong}
+                  onDeleteMany={handleDeleteSongs}
+                  onUseAsReference={handleUseAsReference}
+                  onCoverSong={handleCoverSong}
+                  onUseUploadAsReference={handleUseUploadAsReference}
+                  onCoverUpload={handleCoverUpload}
+                  onSongUpdate={handleSongUpdate}
                 />
               </div>
-            )}
+
+              {/* Song Details - Overlay at bottom */}
+              {showRightSidebar && selectedSong && (
+                <div className="h-[350px] min-h-[300px] border-t border-healing-primary/20 dark:border-tech-primary/20 bg-healing-bg-surface dark:bg-tech-bg-surface backdrop-blur-xl overflow-auto flex-shrink-0">
+                  <RightSidebar
+                    song={selectedSong}
+                    onClose={() => setShowRightSidebar(false)}
+                    onReuse={handleReuse}
+                    onSongUpdate={handleSongUpdate}
+                    onNavigateToProfile={handleNavigateToProfile}
+                    onNavigateToSong={handleNavigateToSong}
+                    isLiked={selectedSong ? likedSongIds.has(selectedSong.id) : false}
+                    onToggleLike={toggleLike}
+                    onDelete={handleDeleteSong}
+                    onPlay={playSong}
+                    isPlaying={isPlaying}
+                    currentSong={currentSong}
+                  />
+                </div>
+              )}
+            </div>
 
             {/* Mobile Toggle Button */}
             <div className="md:hidden absolute top-4 right-4 z-50">
@@ -1420,7 +1408,7 @@ function AppContent() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden font-sans antialiased transition-colors duration-300 healing-bg-gradient healing-text-primary">
+    <div className="flex flex-col h-screen overflow-hidden font-sans antialiased transition-colors duration-300 bg-healing-bg-base dark:bg-tech-bg-base text-healing-text-primary dark:text-tech-text-primary">
       <div className="flex-1 flex overflow-hidden">
         <Sidebar
           currentView={currentView}
@@ -1448,7 +1436,7 @@ function AppContent() {
           onToggle={() => setShowLeftSidebar(!showLeftSidebar)}
         />
 
-        <main className="flex-1 flex overflow-hidden relative healing-bg-main">
+        <main className="flex-1 flex overflow-hidden relative bg-tech-bg-surface">
           {renderContent()}
         </main>
       </div>
@@ -1474,7 +1462,6 @@ function AppContent() {
         isLiked={currentSong ? likedSongIds.has(currentSong.id) : false}
         onToggleLike={() => currentSong && toggleLike(currentSong.id)}
         onNavigateToSong={handleNavigateToSong}
-        onOpenVideo={() => currentSong && openVideoGenerator(currentSong)}
         onReusePrompt={() => currentSong && handleReuse(currentSong)}
         onAddToPlaylist={() => currentSong && openAddToPlaylistModal(currentSong)}
         onDelete={() => currentSong && handleDeleteSong(currentSong)}
@@ -1502,11 +1489,6 @@ function AppContent() {
         isVisible={toast.isVisible}
         onClose={closeToast}
       />
-      <VideoGeneratorModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
-        song={songForVideo}
-      />
       <UsernameModal
         isOpen={showUsernameModal}
         onSubmit={handleUsernameSubmit}
@@ -1530,7 +1512,6 @@ function AppContent() {
             <RightSidebar
               song={selectedSong}
               onClose={() => setShowMobileDetails(false)}
-              onOpenVideo={() => selectedSong && openVideoGenerator(selectedSong)}
               onReuse={handleReuse}
               onSongUpdate={handleSongUpdate}
               onNavigateToProfile={handleNavigateToProfile}
@@ -1559,8 +1540,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <I18nProvider>
-      <AppContent />
-    </I18nProvider>
+    <ThemeProvider>
+      <I18nProvider>
+        <AppContent />
+      </I18nProvider>
+    </ThemeProvider>
   );
 }

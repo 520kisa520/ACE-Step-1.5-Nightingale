@@ -19,7 +19,6 @@ interface SongListProps {
     onSelect: (song: Song) => void;
     onToggleLike: (songId: string) => void;
     onAddToPlaylist: (song: Song) => void;
-    onOpenVideo?: (song: Song) => void;
     onShowDetails?: (song: Song) => void;
     onNavigateToProfile?: (username: string) => void;
     onReusePrompt?: (song: Song) => void;
@@ -97,7 +96,6 @@ export const SongList: React.FC<SongListProps> = ({
     onSelect,
     onToggleLike,
     onAddToPlaylist,
-    onOpenVideo,
     onShowDetails,
     onNavigateToProfile,
     onReusePrompt,
@@ -216,7 +214,7 @@ export const SongList: React.FC<SongListProps> = ({
     const selectedSongs = selectableSongs.filter(song => selectedIds.has(song.id));
 
     return (
-        <div className="flex-1 bg-white dark:bg-black h-full overflow-y-auto custom-scrollbar p-6 pb-32 transition-colors duration-300">
+        <div className="flex-1 bg-healing-bg-card dark:bg-tech-bg-card h-full overflow-y-auto custom-scrollbar p-6 pb-32 transition-colors duration-300">
             <div className="max-w-5xl mx-auto w-full"> {/* Container constraint */}
 
                 {/* Header */}
@@ -380,7 +378,6 @@ export const SongList: React.FC<SongListProps> = ({
                                     }}
                                     onToggleLike={() => onToggleLike(item.song.id)}
                                     onAddToPlaylist={() => onAddToPlaylist(item.song)}
-                                    onOpenVideo={() => onOpenVideo && onOpenVideo(item.song)}
                                     onShowDetails={() => onShowDetails && onShowDetails(item.song)}
                                     onNavigateToProfile={onNavigateToProfile}
                                     onReusePrompt={() => onReusePrompt?.(item.song)}
@@ -433,14 +430,13 @@ interface SongItemProps {
     onToggleSelect: () => void;
     onToggleLike: () => void;
     onAddToPlaylist: () => void;
-    onOpenVideo?: () => void;
     onShowDetails?: () => void;
     onNavigateToProfile?: (username: string) => void;
     onReusePrompt?: () => void;
     onDelete?: () => void;
     onSongUpdate?: (updatedSong: Song) => void;
-    onUseAsReference?: () => void;
-    onCoverSong?: () => void;
+    onUseAsReference?: (song: Song) => void;
+    onCoverSong?: (song: Song) => void;
 }
 
 const SongItem: React.FC<SongItemProps> = ({
@@ -457,7 +453,6 @@ const SongItem: React.FC<SongItemProps> = ({
     onToggleSelect,
     onToggleLike,
     onAddToPlaylist,
-    onOpenVideo,
     onShowDetails,
     onNavigateToProfile,
     onReusePrompt,
@@ -712,14 +707,6 @@ const SongItem: React.FC<SongItemProps> = ({
                         </button>
 
                         <button
-                            className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-white/5 text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
-                            onClick={(e) => { e.stopPropagation(); if (onOpenVideo) onOpenVideo(); }}
-                            title="Create Video"
-                        >
-                            <Video size={16} />
-                        </button>
-
-                        <button
                             className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-white/5 text-zinc-400 hover:text-black dark:hover:text-white transition-colors ml-auto"
                             onClick={(e) => { e.stopPropagation(); onAddToPlaylist(); }}
                             title="Add to Playlist"
@@ -751,13 +738,12 @@ const SongItem: React.FC<SongItemProps> = ({
                                 isOpen={showDropdown}
                                 onClose={() => setShowDropdown(false)}
                                 isOwner={isOwner}
-                                onCreateVideo={() => onOpenVideo?.(song)}
                                 onReusePrompt={onReusePrompt ? () => onReusePrompt?.(song) : undefined}
                                 onAddToPlaylist={() => onAddToPlaylist?.(song)}
                                 onDelete={() => onDelete?.(song)}
                                 onShare={() => setShareModalOpen(true)}
-                                onUseAsReference={() => onUseAsReference?.()}
-                                onCoverSong={() => onCoverSong?.()}
+                                onUseAsReference={onUseAsReference ? () => onUseAsReference(song) : undefined}
+                                onCoverSong={onCoverSong ? () => onCoverSong(song) : undefined}
                             />
                         </div>
                     </div>

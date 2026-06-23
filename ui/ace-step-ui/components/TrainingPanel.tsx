@@ -1133,7 +1133,7 @@ export const TrainingPanel: React.FC = () => {
               <Section title={t('trainingProgress')}>
                 {trainingProgress && <p className="text-xs text-zinc-300 mb-2 break-words">{trainingProgress}</p>}
                 {trainingLog && (
-                  <pre className="text-[10px] text-zinc-400 bg-black/20 rounded-lg p-2 max-h-40 overflow-y-auto whitespace-pre-wrap">{trainingLog}</pre>
+                  <pre className="text-[10px] text-zinc-400 bg-healing-bg-hover dark:bg-tech-bg-hover rounded-lg p-2 max-h-40 overflow-y-auto whitespace-pre-wrap">{trainingLog}</pre>
                 )}
               </Section>
             )}
@@ -1141,7 +1141,7 @@ export const TrainingPanel: React.FC = () => {
             {/* Loss Chart */}
             {lossChartSvg && (
               <Section title="Training Loss">
-                <div className="bg-black/20 rounded-lg p-2">{lossChartSvg}</div>
+                <div className="bg-healing-bg-hover dark:bg-tech-bg-hover rounded-lg p-2">{lossChartSvg}</div>
               </Section>
             )}
           </>

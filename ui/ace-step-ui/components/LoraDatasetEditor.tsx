@@ -4,6 +4,7 @@ import {
   Save, Music2, Hash, Sliders, ChevronDown, ChevronUp,
   FileAudio, Tag, Heart, Zap
 } from 'lucide-react';
+import { GlassCard } from './ui/GlassCard';
 
 interface DatasetSample {
   id: string;
@@ -144,58 +145,59 @@ export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-healing-primary dark:text-healing-primary-light flex items-center gap-2">
-          <Music2 size={16} />
-          LoRA 数据集编辑
-        </h3>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-healing-primary/10 text-healing-primary hover:bg-healing-primary/20 transition-colors flex items-center gap-1"
-          >
-            <Upload size={14} />
-            导入 JSON
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json"
-            onChange={handleImportJson}
-            className="hidden"
-          />
-          <button
-            onClick={handleExportJson}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-healing-primary/10 text-healing-primary hover:bg-healing-primary/20 transition-colors flex items-center gap-1"
-          >
-            <Download size={14} />
-            导出 JSON
-          </button>
-          <button
-            onClick={handleAddSample}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-healing-primary text-white hover:bg-healing-primary-dark transition-colors flex items-center gap-1"
-          >
-            <Plus size={14} />
-            添加样本
-          </button>
-        </div>
-      </div>
-
-      {/* Samples List */}
-      <div className="space-y-4">
-        {samples.length === 0 ? (
-          <div className="p-8 rounded-2xl border-2 border-dashed border-healing-primary/30 text-center">
-            <Music2 className="w-12 h-12 mx-auto text-healing-primary/50 mb-4" />
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              暂无样本，点击上方按钮添加
-            </p>
+    <GlassCard variant="tech" className="space-y-6 animate-fade-in">
+      <div className="p-4">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-sm font-bold text-tech-primary flex items-center gap-2">
+            <Music2 size={16} />
+            LoRA 数据集编辑
+          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-tech-primary/10 text-tech-primary hover:bg-tech-primary/20 transition-colors flex items-center gap-1"
+            >
+              <Upload size={14} />
+              导入 JSON
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={handleImportJson}
+              className="hidden"
+            />
+            <button
+              onClick={handleExportJson}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-tech-primary/10 text-tech-primary hover:bg-tech-primary/20 transition-colors flex items-center gap-1"
+            >
+              <Download size={14} />
+              导出 JSON
+            </button>
+            <button
+              onClick={handleAddSample}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-tech-primary text-white hover:bg-tech-primary-dark transition-colors flex items-center gap-1"
+            >
+              <Plus size={14} />
+              添加样本
+            </button>
           </div>
-        ) : (
-          samples.map((sample) => (
-            <div
-              key={sample.id}
+        </div>
+
+        {/* Samples List */}
+        <div className="space-y-4">
+          {samples.length === 0 ? (
+            <div className="p-8 rounded-2xl border-2 border-dashed border-tech-primary/30 text-center">
+              <Music2 className="w-12 h-12 mx-auto text-tech-primary/50 mb-4" />
+              <p className="text-sm text-tech-text-muted">
+                暂无样本，点击上方按钮添加
+              </p>
+            </div>
+          ) : (
+            samples.map((sample) => (
+              <div
+                key={sample.id}
               className="p-4 rounded-2xl border border-healing-primary/20 bg-white/50 dark:bg-healing-bg-card/50 backdrop-blur-sm transition-all duration-300"
             >
               {/* Sample Header */}
@@ -391,12 +393,13 @@ export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
       {samples.length > 0 && onSave && (
         <button
           onClick={() => onSave(samples)}
-          className="w-full py-3 rounded-xl bg-healing-primary text-white font-medium hover:bg-healing-primary-dark transition-colors flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-xl bg-tech-primary text-white font-medium hover:bg-tech-primary-dark transition-colors flex items-center justify-center gap-2"
         >
           <Save size={18} />
           保存数据集
         </button>
       )}
-    </div>
+      </div>
+    </GlassCard>
   );
 };

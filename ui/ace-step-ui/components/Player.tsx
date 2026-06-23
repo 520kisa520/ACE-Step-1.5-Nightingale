@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Song } from '../types';
-import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Download, Heart, MoreVertical, Volume2, VolumeX, Maximize2, Repeat1, ChevronDown, ChevronUp } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Download, Heart, MoreVertical, Volume2, VolumeX, Repeat1, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useResponsive } from '../context/ResponsiveContext';
 import { useI18n } from '../context/I18nContext';
 import { SongDropdownMenu } from './SongDropdownMenu';
 import { ShareModal } from './ShareModal';
 import { AlbumCover } from './AlbumCover';
+import { HEALING_MODE } from '../data/healingPresets';
 
 interface PlayerProps {
     currentSong: Song | null;
@@ -29,7 +30,6 @@ interface PlayerProps {
     isLiked: boolean;
     onToggleLike: () => void;
     onNavigateToSong?: (songId: string) => void;
-    onOpenVideo?: () => void;
     onReusePrompt?: () => void;
     onAddToPlaylist?: () => void;
     onDelete?: () => void;
@@ -57,7 +57,6 @@ export const Player: React.FC<PlayerProps> = ({
     isLiked,
     onToggleLike,
     onNavigateToSong,
-    onOpenVideo,
     onReusePrompt,
     onAddToPlaylist,
     onDelete,
@@ -290,11 +289,6 @@ export const Player: React.FC<PlayerProps> = ({
 
                     {/* Extra Actions */}
                     <div className="flex items-center justify-center gap-6 px-6 pb-6 text-zinc-400 dark:text-white/50">
-                        {onOpenVideo && (
-                            <button onClick={onOpenVideo} className="p-3 tap-highlight-none">
-                                <Maximize2 size={20} />
-                            </button>
-                        )}
                         <button
                             onClick={handleDownload}
                             className="p-3 tap-highlight-none"
@@ -319,7 +313,6 @@ export const Player: React.FC<PlayerProps> = ({
                                 isOwner={user?.id === currentSong.userId}
                                 position="left"
                                 direction="up"
-                                onCreateVideo={onOpenVideo}
                                 onReusePrompt={onReusePrompt}
                                 onAddToPlaylist={onAddToPlaylist}
                                 onDelete={onDelete}
@@ -584,14 +577,6 @@ export const Player: React.FC<PlayerProps> = ({
                                 >
                                     <Heart size={22} fill={isLiked ? "currentColor" : "none"} />
                                 </button>
-                                {onOpenVideo && (
-                                    <button
-                                        onClick={onOpenVideo}
-                                        className="p-3 rounded-full hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors"
-                                    >
-                                        <Maximize2 size={20} />
-                                    </button>
-                                )}
                                 <button
                                     onClick={handleDownload}
                                     className="p-3 rounded-full hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors"
@@ -614,7 +599,6 @@ export const Player: React.FC<PlayerProps> = ({
                                             isOwner={user?.id === currentSong.userId}
                                             position="right"
                                             direction="up"
-                                            onCreateVideo={onOpenVideo}
                                             onReusePrompt={onReusePrompt}
                                             onAddToPlaylist={onAddToPlaylist}
                                             onDelete={onDelete}
@@ -805,12 +789,6 @@ export const Player: React.FC<PlayerProps> = ({
                     >
                         <Download size={18} />
                     </button>
-                    <button
-                        onClick={() => setIsFullscreen(true)}
-                        className="p-1.5 lg:p-2 hover:bg-zinc-100 dark:hover:bg-white/10 rounded-full transition-colors"
-                    >
-                        <Maximize2 size={16} />
-                    </button>
                     <div className="relative hidden sm:block">
                         <button
                             onClick={() => setShowDropdown(!showDropdown)}
@@ -825,7 +803,6 @@ export const Player: React.FC<PlayerProps> = ({
                             isOwner={user?.id === currentSong.userId}
                             position="right"
                             direction="up"
-                            onCreateVideo={onOpenVideo}
                             onReusePrompt={onReusePrompt}
                             onAddToPlaylist={onAddToPlaylist}
                             onDelete={onDelete}

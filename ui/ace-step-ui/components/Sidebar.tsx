@@ -1,5 +1,5 @@
 import React from 'react';
-import { Library, Disc, Search, LogIn, LogOut, Sun, Moon, GraduationCap, Newspaper, Leaf } from 'lucide-react';
+import { Library, Disc, Search, LogIn, LogOut, Sun, Moon, GraduationCap, Bird, Music } from 'lucide-react';
 import { View } from '../types';
 import { useI18n } from '../context/I18nContext';
 import { HEALING_MODE } from '../data/healingPresets';
@@ -45,14 +45,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className={`
         flex flex-col h-full border-r flex-shrink-0 py-4 overflow-y-auto scrollbar-hide transition-all duration-300
         fixed left-0 top-0 z-50 md:relative backdrop-blur-2xl shadow-[0_20px_50px_-20px_rgba(15,23,42,0.18)]
-        ${HEALING_MODE ? 'bg-healing-bg-dark/90 border-healing-primary/20' : 'bg-white/85 border-white/40'} dark:bg-slate-950/90 dark:border-white/10
+        ${HEALING_MODE ? 'bg-healing-bg-card/90 border-healing-primary/20' : 'bg-white/85 border-white/40'} dark:bg-tech-bg-card/90 dark:border-tech-primary/20
         ${isOpen ? 'w-[240px]' : 'w-[80px]'}
       `}>
       {/* Logo & Brand */}
       <div className="px-3 mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer shadow-xl hover:scale-105 transition-all duration-300 flex-shrink-0 animate-float ${
+            className={`w-14 h-14 rounded-xl flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 transition-all duration-300 flex-shrink-0 ${
               HEALING_MODE
                 ? 'bg-gradient-to-br from-healing-primary to-healing-primary-dark hover:shadow-healing-primary/30'
                 : 'bg-gradient-to-br from-pink-500 to-purple-600 hover:shadow-pink-500/30'
@@ -61,9 +61,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             title={t('aceStepUI')}
           >
             {HEALING_MODE ? (
-              <Leaf className="w-6 h-6 text-white" />
+              <div className="relative w-7 h-7 flex items-center justify-center">
+                <Bird className="w-6 h-6 text-white absolute" style={{ transform: 'translateX(-2px)' }} />
+                <Music className="w-4 h-4 text-white absolute" style={{ transform: 'translate(4px, 4px)' }} />
+              </div>
             ) : (
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 text-white">
                 <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -71,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             )}
           </div>
           {isOpen && (
-            <span className="text-lg font-bold text-zinc-900 dark:text-white whitespace-nowrap block">
+            <span className="text-lg font-bold text-tech-text-primary dark:text-tech-text-primary whitespace-nowrap block">
               {t('brandProductName')}
             </span>
           )}
@@ -80,7 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {onToggle && (
           <button
             onClick={onToggle}
-            className="w-8 h-8 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/10 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors flex-shrink-0"
+            className="w-8 h-8 rounded-lg hover:bg-tech-bg-hover dark:hover:bg-tech-bg-hover flex items-center justify-center text-tech-text-secondary dark:text-tech-text-secondary hover:text-tech-text-primary dark:hover:text-tech-text-primary transition-colors flex-shrink-0"
             title={isOpen ? t('collapseSidebar') : t('expandSidebar')}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,15 +126,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onNavigate('training')}
           isExpanded={isOpen}
         />
-        {!HEALING_MODE && (
-        <NavItem
-          icon={<Newspaper size={20} />}
-          label={t('news')}
-          active={currentView === 'news'}
-          onClick={() => onNavigate('news')}
-          isExpanded={isOpen}
-        />
-        )}
 
         <div className="mt-auto flex flex-col gap-2">
           {/* Theme Toggle */}
