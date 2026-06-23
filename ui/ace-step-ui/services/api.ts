@@ -187,45 +187,9 @@ export const songsApi = {
   createSong: (song: Partial<InternalSong>, token: string): Promise<{ song: InternalSong }> =>
     api('/api/songs', { method: 'POST', body: song, token }),
 
-  updateSong: async (id: string, updates: Partial<Song>, token: string): Promise<{ song: any }> => {
-    const result = await api(`/api/songs/${id}`, { method: 'PATCH', body: updates, token }) as { song: any };
-    const s = result.song;
-    const rawUrl = s.audio_url || s.audioUrl;
-    const resolvedUrl = getAudioUrl(rawUrl, s.id);
-
-    return {
-      song: {
-        id: s.id,
-        title: s.title,
-        lyrics: s.lyrics,
-        style: s.style,
-        caption: s.caption,
-        cover_url: s.cover_url,
-        coverUrl: s.cover_url || s.coverUrl || `https://picsum.photos/seed/${s.id}/400/400`,
-        duration: s.duration && s.duration > 0 ? `${Math.floor(s.duration / 60)}:${String(Math.floor(s.duration % 60)).padStart(2, '0')}` : '0:00',
-        createdAt: new Date(s.created_at || s.createdAt),
-        created_at: s.created_at,
-        tags: s.tags || [],
-        audioUrl: resolvedUrl,
-        audio_url: resolvedUrl,
-        isPublic: s.is_public ?? s.isPublic,
-        is_public: s.is_public ?? s.isPublic,
-        likeCount: s.like_count || s.likeCount || 0,
-        like_count: s.like_count || s.likeCount || 0,
-        viewCount: s.view_count || s.viewCount || 0,
-        view_count: s.view_count || s.viewCount || 0,
-        userId: s.user_id || s.userId,
-        user_id: s.user_id || s.userId,
-        creator: s.creator,
-        creator_avatar: s.creator_avatar,
-        ditModel: s.dit_model || s.ditModel,
-        isGenerating: s.isGenerating,
-        queuePosition: s.queuePosition,
-        bpm: s.bpm,
-        key_scale: s.key_scale,
-        time_signature: s.time_signature,
-      }
-    };
+  updateSong: async (id: string, updates: Partial<InternalSong>, token: string): Promise<{ song: InternalSong }> => {
+    const result = await api(`/api/songs/${id}`, { method: 'PATCH', body: updates, token }) as { song: ApiSong };
+    return { song: transformApiSong(result.song) };
   },
 
   deleteSong: (id: string, token: string): Promise<{ success: boolean }> =>
@@ -234,8 +198,8 @@ export const songsApi = {
   toggleLike: (id: string, token: string): Promise<{ liked: boolean }> =>
     api(`/api/songs/${id}/like`, { method: 'POST', token }),
 
-  getLikedSongs: async (token: string): Promise<{ songs: Song[] }> => {
-    const result = await api('/api/songs/liked/list', { token }) as { songs: Song[] };
+  getLikedSongs: async (token: string): Promise<{ songs: InternalSong[] }> => {
+    const result = await api('/api/songs/liked/list', { token }) as { songs: ApiSong[] };
     return { songs: transformSongs(result.songs) };
   },
 
@@ -557,13 +521,13 @@ export const playlistsApi = {
 
 // Search API
 export interface SearchResult {
-  songs: Song[];
+  songs: ApiSong[];
   creators: Array<UserProfile & { follower_count?: number }>;
   playlists: Array<Playlist & { creator?: string; creator_avatar?: string }>;
 }
 
 export const searchApi = {
-  search: async (query: string, type?: 'songs' | 'creators' | 'playlists' | 'all'): Promise<SearchResult> => {
+  search: async (query: string, type?: 'songs' | 'creators' | 'playlists' | 'all'): Promise<{ songs: InternalSong[], creators: Array<UserProfile & { follower_count?: number }>, playlists: Array<Playlist & { creator?: string; creator_avatar?: string }> }> => {
     const params = new URLSearchParams({ q: query });
     if (type && type !== 'all') params.append('type', type);
     const result = await api(`/api/search?${params}`) as SearchResult;
