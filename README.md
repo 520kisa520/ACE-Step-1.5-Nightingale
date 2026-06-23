@@ -263,10 +263,6 @@ cd .. && npm run dev
 - [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) — 高效开源音乐基础模型（ACE Studio & StepFun）
 - [Hugging Face](https://huggingface.co/ACE-Step) — 模型托管与社区
 
-特别感谢：
-- **上海音乐学院人工智能音乐疗愈重点实验室** — 疗愈音乐语料库与科研支持
-- **上海脑舒科技有限公司（SOOTHE）** — HRV 情绪解码算法与产品化支持
-
 ---
 
 ## 📜 许可证
