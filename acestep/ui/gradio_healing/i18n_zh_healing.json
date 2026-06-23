@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "静听 · 国风疗愈纯音乐工坊",
+    "subtitle": "冥想助眠 · 舒缓器乐生成 · LoRA 风格微调"
+  },
+  "generation": {
+    "tab_title": "🎋 纯音乐生成",
+    "mode_label": "创作方式",
+    "mode_info_custom": "Simple：自然语言描述；Custom：精细控制正向提示词与参数。",
+    "simple_query_label": "疗愈场景描述",
+    "simple_query_placeholder": "描述你想要的疗愈场景，例如：「雨夜窗前的古琴慢板，适合冥想入眠」",
+    "simple_query_info": "用自然语言描述氛围、乐器与用途（冥想/助眠/放松）。",
+    "caption_label": "正向提示词（风格描述）",
+    "caption_placeholder": "meditation, guqin, slow tempo, no vocals, peaceful...",
+    "lyrics_label": "歌词（纯音乐模式无需填写）",
+    "instrumental_label": "纯器乐（无人声）",
+    "optional_params": "🎚️ 乐曲参数",
+    "bpm_label": "BPM（节拍）",
+    "duration_label": "时长（秒）",
+    "vocal_language_label": "人声语言（纯音乐可忽略）"
+  },
+  "training": {
+    "tab_title": "🎋 LoRA 微调",
+    "tab_train_lora": "训练 LoRA",
+    "train_tensor_selection_desc": "选择已预处理的疗愈纯音乐数据集张量目录，开始 LoRA 风格微调。"
+  }
+}
