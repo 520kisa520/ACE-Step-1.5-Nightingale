@@ -10,15 +10,14 @@
     <a href="#-快速开始">快速开始</a> |
     <a href="#-核心技术">核心技术</a> |
     <a href="#-临床场景">临床场景</a> |
-    <a href="#-模型架构">模型架构</a> |
     <a href="https://www.soothebci.com">官网</a> |
-    <a href="https://huggingface.co/ACE-Step/Ace-Step1.5">Hugging Face</a> |
-    <a href="https://arxiv.org/abs/2602.00744">技术报告</a>
+    <a href="https://huggingface.co/ACE-Step/Ace-Step1.5">Hugging Face</a>
 </p>
 
 <p align="center">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
-    <img src="https://img.shields.io/badge/Python-3.11--3.12-blue.svg" alt="Python">
+    <img src="https://img.shields.io/badge/React-19-blue.svg" alt="React">
+    <img src="https://img.shields.io/badge/TypeScript-5.8-blue.svg" alt="TypeScript">
     <img src="https://img.shields.io/badge/ACE--Step-v1.5-orange.svg" alt="ACE-Step">
     <img src="https://img.shields.io/badge/LoRA-Healing%20Fine--tuned-purple.svg" alt="LoRA">
 </p>
@@ -32,16 +31,17 @@
 - [核心技术](#-核心技术)
 - [临床场景](#-临床场景)
 - [快速开始](#-快速开始)
-- [模型架构](#-模型架构)
+- [项目结构](#-项目结构)
 - [核心数据](#-核心数据)
 - [致谢](#-致谢)
-- [许可证](#-许可证)
 
 ---
 
 ## 🌟 项目简介
 
-**夜莺（Nightingale）** 是全球首个瞄准身心疗愈场景落地的 AI 视听垂类大模型，基于开源 [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) 音乐生成模型，通过上海音乐学院权威疗愈音乐语料库进行 **LoRA 深度微调**，实现从生理监测到专案疗愈的完整闭环。
+**夜莺（Nightingale）** 是全球首个瞄准身心疗愈场景落地的 AI 视听垂类大模型应用平台，基于开源 [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) 音乐生成模型，通过上海音乐学院权威疗愈音乐语料库进行 **LoRA 深度微调**，实现从生理监测到专案疗愈的完整闭环。
+
+本仓库包含夜莺的 **Web UI 前端** 和 **后端服务**，提供完整的疗愈音乐生成交互界面。
 
 ### 核心特色
 
@@ -67,8 +67,6 @@
 ### 上海音乐学院 · AI 音乐疗愈重点实验室
 
 上海音乐学院人工智能音乐疗愈重点实验室于 **2024 年 11 月** 正式成立，是国内首个融合 **艺术学·医学·工学** 三大一级学科的交叉重点实验室。
-
-实验室秉持跨学科研究思路，深耕艺术、科技、医学交叉方向，研究范畴涵盖音乐人工智能、音乐疗愈、声音脑科学、艺术嗓音学等前沿学科。
 
 **核心负责人：**
 - 首席专家：廖昌永（上海音乐学院院长）
@@ -99,15 +97,6 @@
 - 覆盖十大临床应用场景、24 大生活应用场景
 - 支持 50+ 语言歌词生成与多种音乐风格
 
-### 技术架构
-
-本项目基于 [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) 开源模型：
-
-- **DiT（Diffusion Transformer）**：2B / 4B 参数量的音频生成核心
-- **LM（Language Model）**：0.6B / 1.7B / 4B 参数量的智能规划器
-- **LoRA 微调**：基于疗愈音乐语料库的轻量级个性化适配
-- **VAE 解码器**：高保真音频重建
-
 ---
 
 ## 🏥 临床场景
@@ -135,82 +124,76 @@
 
 ## ⚡ 快速开始
 
-> **环境要求：** Python 3.11-3.12，推荐 CUDA GPU（也支持 MPS / ROCm / Intel XPU / CPU）
+### 前置要求
+
+- Node.js 18+
+- ACE-Step 1.5 推理服务运行中（提供音乐生成 API）
+
+### 安装与启动
 
 ```bash
-# 1. 安装 uv
-curl -LsSf https://astral.sh/uv/install.sh | sh          # macOS / Linux
-# powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
-
-# 2. 克隆 & 安装
+# 1. 克隆仓库
 git clone https://github.com/520kisa520/ACE-Step-1.5-Nightingale.git
 cd ACE-Step-1.5-Nightingale
-uv sync
 
-# 3. 启动 Gradio UI（首次运行自动下载模型）
-uv run acestep
-
-# 或启动 REST API 服务
-uv run acestep-api
-```
-
-打开 http://localhost:7860 （Gradio）或 http://localhost:8001 （API）。
-
-### 启动夜莺 UI
-
-```bash
-# 进入 UI 目录
+# 2. 安装前端依赖
 cd ui/ace-step-ui
-
-# 安装依赖
 npm install
 
-# 启动后端服务
-cd server && npm install && npm run dev &
+# 3. 安装并启动后端服务
+cd server
+npm install
+npm run dev &
 
-# 启动前端开发服务器
-cd .. && npm run dev
+# 4. 启动前端开发服务器
+cd ..
+npm run dev
 ```
 
 打开 http://localhost:3000 即可使用夜莺疗愈音乐生成界面。
 
-### GPU 推荐配置
+### 连接 ACE-Step 推理后端
 
-| GPU 显存 | 推荐 DiT | 推荐 LM 模型 | 说明 |
-|----------|----------|-------------|------|
-| **≤6GB** | 2B turbo | 无（纯 DiT） | INT8 量化 + CPU 全卸载 |
-| **6-8GB** | 2B turbo | 0.6B | 轻量 LM |
-| **8-16GB** | 2B turbo/sft | 0.6B / 1.7B | 推荐配置 |
-| **16-20GB** | 2B sft 或 XL turbo | 1.7B | XL 需 CPU 卸载 |
-| **≥20GB** | XL sft | 4B | 最佳质量 |
+UI 默认连接 `http://localhost:8001` 的 ACE-Step API 服务。请确保 ACE-Step 推理服务已启动：
+
+```bash
+# 在 ACE-Step 1.5 目录下
+git clone https://github.com/ACE-Step/ACE-Step-1.5.git
+cd ACE-Step-1.5
+uv sync
+uv run acestep-api
+```
 
 ---
 
-## 🏗️ 模型架构
+## 📁 项目结构
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    夜莺 · Nightingale                      │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  ┌──────────┐    ┌──────────┐    ┌──────────────────┐  │
-│  │ HRV 监测  │───▶│ 情绪解码  │───▶│ 疗愈方案智能匹配  │  │
-│  └──────────┘    └──────────┘    └────────┬─────────┘  │
-│                                           │             │
-│  ┌────────────────────────────────────────▼──────────┐  │
-│  │              ACE-Step 1.5 Base Model               │  │
-│  │  ┌─────────┐  ┌─────────────┐  ┌──────────────┐  │  │
-│  │  │ LM 规划器│  │ DiT 音频生成 │  │ VAE 音频解码  │  │  │
-│  │  └─────────┘  └─────────────┘  └──────────────┘  │  │
-│  └────────────────────────────────────────────────────┘  │
-│                          │                              │
-│  ┌───────────────────────▼────────────────────────────┐  │
-│  │         LoRA 疗愈微调层（上海音乐学院语料库）         │  │
-│  └────────────────────────────────────────────────────┘  │
-│                          │                              │
-│                          ▼                              │
-│              🎵 疗愈音乐输出 + 效果验证                   │
-└─────────────────────────────────────────────────────────┘
+ACE-Step-1.5-Nightingale/
+├── ui/ace-step-ui/          # 夜莺 Web 应用
+│   ├── components/          # React UI 组件
+│   │   ├── CreatePanel.tsx  # 音乐生成面板（临床场景、国风标签）
+│   │   ├── Sidebar.tsx      # 导航侧边栏
+│   │   ├── Player.tsx       # 音频播放器
+│   │   ├── LibraryView.tsx  # 曲库管理
+│   │   ├── SearchPage.tsx   # 搜索页面
+│   │   └── ...
+│   ├── server/              # 后端服务（Express + SQLite）
+│   │   ├── src/
+│   │   │   ├── routes/      # API 路由
+│   │   │   ├── services/    # 业务逻辑
+│   │   │   └── db/          # 数据库
+│   │   └── package.json
+│   ├── context/             # React Context（认证、国际化、主题）
+│   ├── services/            # API 调用服务
+│   ├── i18n/                # 多语言支持
+│   ├── data/                # 疗愈预设数据
+│   ├── App.tsx              # 应用入口
+│   ├── package.json
+│   └── vite.config.ts
+├── .claude/skills/          # AI Agent 技能配置
+├── README.md
+└── LICENSE
 ```
 
 ---
@@ -244,32 +227,17 @@ cd .. && npm run dev
 
 ---
 
-## 📚 文档
-
-| 内容 | 链接 |
-|------|------|
-| 安装指南 | [中文](./docs/zh/INSTALL.md) \| [English](./docs/en/INSTALL.md) \| [日本語](./docs/ja/INSTALL.md) |
-| Gradio 使用指南 | [中文](./docs/zh/GRADIO_GUIDE.md) \| [English](./docs/en/GRADIO_GUIDE.md) |
-| API 文档 | [中文](./docs/zh/API.md) \| [English](./docs/en/API.md) |
-| LoRA 训练教程 | [中文](./docs/zh/LoRA_Training_Tutorial.md) \| [English](./docs/en/LoRA_Training_Tutorial.md) |
-| GPU 兼容性 | [中文](./docs/zh/GPU_COMPATIBILITY.md) \| [English](./docs/en/GPU_COMPATIBILITY.md) |
-
----
-
 ## 🙏 致谢
 
 本项目基于以下开源项目构建：
 
 - [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) — 高效开源音乐基础模型（ACE Studio & StepFun）
-- [Hugging Face](https://huggingface.co/ACE-Step) — 模型托管与社区
 
 ---
 
 ## 📜 许可证
 
 本项目基于 [MIT License](./LICENSE) 开源。
-
-本项目旨在推动音乐疗愈技术的普及与发展，请用户在使用时遵守相关法律法规，尊重音乐创作者权益，不得将生成内容用于非法或有害目的。
 
 ---
 
