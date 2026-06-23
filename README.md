@@ -1,327 +1,254 @@
-<h1 align="center">ACE-Step 1.5</h1>
-<h1 align="center">Pushing the Boundaries of Open-Source Music Generation</h1>
+<h1 align="center">🌙 夜莺 · Nightingale</h1>
+<h3 align="center">全球首个视听疗愈 AI 大模型</h3>
+<h4 align="center">The World's First Audio-Visual Healing AI Foundation Model</h4>
+
 <p align="center">
-    <a href="https://acemusic.ai">ACEMusic</a> |
-    <a href="https://ace-step.github.io/ace-step-v1.5.github.io/">Project</a> |
-    <a href="https://huggingface.co/ACE-Step/Ace-Step1.5">Hugging Face</a> |
-    <a href="https://modelscope.cn/models/ACE-Step/Ace-Step1.5">ModelScope</a> |
-    <a href="https://huggingface.co/spaces/ACE-Step/Ace-Step-v1.5">Space Demo</a> |
-    <a href="https://discord.gg/PeWDxrkdj7">Discord</a> |
-    <a href="https://arxiv.org/abs/2602.00744">Technical Report</a> |
-    <a href="https://github.com/ace-step/awesome-ace-step">Awesome ACE-Step</a>
+    <em>从监测到判定，从判定到疗愈，从疗愈到验证——构建全球首个可量化的身心健康 AI 闭环</em>
 </p>
 
 <p align="center">
-    <img src="./assets/organization_logos.png" height="80" alt="StepFun Logo" style="vertical-align: middle;">
-    &nbsp;&nbsp;
-    <a href="https://acemusic.ai">
-        <img src="./assets/acemusic-logo.svg" height="57" alt="ACEMusic - Try ACE-Step Online" style="vertical-align: middle; position: relative; top: 2px;">
-    </a>
+    <a href="#-快速开始">快速开始</a> |
+    <a href="#-核心技术">核心技术</a> |
+    <a href="#-临床场景">临床场景</a> |
+    <a href="https://www.soothebci.com">官网</a> |
+    <a href="https://huggingface.co/ACE-Step/Ace-Step1.5">Hugging Face</a>
 </p>
-
-## 📰 News
-
-> 🎵 **Want a faster & more stable experience? Try [acemusic.ai](https://acemusic.ai) — 100% free!**
-
-- **[2026-04-02] 🎉 ACE-Step 1.5 XL (4B DiT) Released!** — We introduce the XL series with a 4B-parameter DiT decoder for higher audio quality. Three variants available: [xl-base](https://huggingface.co/ACE-Step/acestep-v15-xl-base), [xl-sft](https://huggingface.co/ACE-Step/acestep-v15-xl-sft), [xl-turbo](https://huggingface.co/ACE-Step/acestep-v15-xl-turbo). Requires ≥12GB VRAM (with offload), ≥20GB recommended. All LM models fully compatible. See [Model Zoo](#-model-zoo) for details.
-
-## Table of Contents
-
-- [📰 News](#-news)
-- [✨ Features](#-features)
-- [⚡ Quick Start](#-quick-start)
-- [🚀 Launch Scripts](#-launch-scripts)
-- [📚 Documentation](#-documentation)
-- [📖 Tutorial](#-tutorial)
-- [🏗️ Architecture](#️-architecture)
-- [🦁 Model Zoo](#-model-zoo)
-- [🔬 Benchmark](#-benchmark)
-
-## 📝 Abstract
-🚀 We present ACE-Step v1.5, a highly efficient open-source music foundation model that brings commercial-grade generation to consumer hardware. On commonly used evaluation metrics, ACE-Step v1.5 achieves quality beyond most commercial music models while remaining extremely fast—under 2 seconds per full song on an A100 and under 10 seconds on an RTX 3090. The model runs locally with less than 4GB of VRAM, and supports lightweight personalization: users can train a LoRA from just a few songs to capture their own style.
-
-🌉 At its core lies a novel hybrid architecture where the Language Model (LM) functions as an omni-capable planner: it transforms simple user queries into comprehensive song blueprints—scaling from short loops to 10-minute compositions—while synthesizing metadata, lyrics, and captions via Chain-of-Thought to guide the Diffusion Transformer (DiT). ⚡ Uniquely, this alignment is achieved through intrinsic reinforcement learning relying solely on the model's internal mechanisms, thereby eliminating the biases inherent in external reward models or human preferences. 🎚️
-
-🔮 Beyond standard synthesis, ACE-Step v1.5 unifies precise stylistic control with versatile editing capabilities—such as cover generation, repainting, and vocal-to-BGM conversion—while maintaining strict adherence to prompts across 50+ languages. This paves the way for powerful tools that seamlessly integrate into the creative workflows of music artists, producers, and content creators. 🎸
-
-
-## ✨ Features
 
 <p align="center">
-    <img src="./assets/application_map.png" width="100%" alt="ACE-Step Framework">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
+    <img src="https://img.shields.io/badge/React-19-blue.svg" alt="React">
+    <img src="https://img.shields.io/badge/TypeScript-5.8-blue.svg" alt="TypeScript">
+    <img src="https://img.shields.io/badge/ACE--Step-v1.5-orange.svg" alt="ACE-Step">
+    <img src="https://img.shields.io/badge/LoRA-Healing%20Fine--tuned-purple.svg" alt="LoRA">
 </p>
 
-### ⚡ Performance
-- ✅ **Ultra-Fast Generation** — Under 2s per full song on A100, under 10s on RTX 3090 (0.5s to 10s on A100 depending on think mode & diffusion steps)
-- ✅ **Flexible Duration** — Supports 10 seconds to 10 minutes (600s) audio generation
-- ✅ **Batch Generation** — Generate up to 8 songs simultaneously
+---
 
-### 🎵 Generation Quality
-- ✅ **Commercial-Grade Output** — Quality beyond most commercial music models (between Suno v4.5 and Suno v5)
-- ✅ **Rich Style Support** — 1000+ instruments and styles with fine-grained timbre description
-- ✅ **Multi-Language Lyrics** — Supports 50+ languages with lyrics prompt for structure & style control
+## 📋 目录
 
-### 🎛️ Versatility & Control
+- [项目简介](#-项目简介)
+- [关于我们](#-关于我们)
+- [核心技术](#-核心技术)
+- [临床场景](#-临床场景)
+- [快速开始](#-快速开始)
+- [项目结构](#-项目结构)
+- [核心数据](#-核心数据)
+- [致谢](#-致谢)
 
-| Feature | Description |
-|---------|-------------|
-| ✅ Reference Audio Input | Use reference audio to guide generation style |
-| ✅ Cover Generation | Create covers from existing audio |
-| ✅ Repaint & Edit | Selective local audio editing and regeneration |
-| ✅ Track Separation | Separate audio into individual stems |
-| ✅ Multi-Track Generation | Add layers like Suno Studio's "Add Layer" feature |
-| ✅ Vocal2BGM | Auto-generate accompaniment for vocal tracks |
-| ✅ Metadata Control | Control duration, BPM, key/scale, time signature |
-| ✅ Simple Mode | Generate full songs from simple descriptions |
-| ✅ Query Rewriting | Auto LM expansion of tags and lyrics |
-| ✅ Audio Understanding | Extract BPM, key/scale, time signature & caption from audio |
-| ✅ LRC Generation | Auto-generate lyric timestamps for generated music |
-| ✅ LoRA Training | One-click annotation & training in Gradio. 8 songs, 1 hour on 3090 (12GB VRAM) |
-| ✅ Quality Scoring | Automatic quality assessment for generated audio |
+---
 
-## 🔔 Staying ahead
-Star ACE-Step on GitHub and be instantly notified of new releases
-![](assets/star.gif)
+## 🌟 项目简介
 
-## 🤝 Partners
+**夜莺（Nightingale）** 是全球首个瞄准身心疗愈场景落地的 AI 视听垂类大模型应用平台，基于开源 [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) 音乐生成模型，通过上海音乐学院权威疗愈音乐语料库进行 **LoRA 深度微调**，实现从生理监测到专案疗愈的完整闭环。
 
-<p align="center">
-    <a href="https://www.comfy.org/"><img src="https://registry.comfy.org/_next/static/media/logo_blue.9ac227d3.png" alt="ComfyUI" height="40" style="margin: 5px;"></a>
-    <a href="https://zilliz.com/"><img src="https://avatars.githubusercontent.com/u/18416694" alt="Zilliz" height="40" style="margin: 5px;"></a>
-    <a href="https://milvus.io/"><img src="https://miro.medium.com/v2/resize:fit:2400/1*-VEGyAgcIBD62XtZWavy8w.png" alt="Milvus" height="40" style="margin: 5px;"></a>
-    <a href="https://zeabur.com/"><img src="https://zeabur.notion.site/image/attachment%3A43bc244b-9a2d-4b96-9646-8392aa6fc862%3Alogo-dark_1.svg?table=block&id=318a221c-948e-8056-b3c0-f9c39ce543ba&spaceId=ba37aeb9-0937-401d-aa41-ce1d3b6ff778&userId=&cache=v2" alt="Zeabur" height="40" width="40" style="margin: 5px;"></a>
-    <a href="https://majiks.studio"><img src="https://raw.githubusercontent.com/Majiks-Studio/majiks-brand-kit/main/logos/app-icon/png/app-icon-128.png" alt="Majik's Music Studio" height="40" width="40" style="margin: 5px;"></a>
-</p>
+本仓库包含夜莺的 **Web UI 前端** 和 **后端服务**，提供完整的疗愈音乐生成交互界面。
 
-## ⚡ Quick Start
+### 核心特色
 
-> 🎵 **Don't want to install locally? Try [acemusic.ai](https://acemusic.ai) — 100% free, no GPU required!**
+| 特性 | 说明 |
+|------|------|
+| 🎵 **疗愈音乐生成** | 基于百万级疗愈音乐语料库深度训练的 LoRA 模型 |
+| 🧠 **临床场景匹配** | 覆盖十大临床应用场景、24 大生活应用场景 |
+| 🎼 **国风疗愈** | 支持古筝、琵琶、二胡、竹笛、古琴等中国传统乐器 |
+| ⚡ **高效推理** | A100 上 2 秒生成完整曲目，RTX 3090 上 10 秒内 |
+| 🔬 **科学验证** | 与上海音乐学院 AI 音乐疗愈重点实验室战略合作 |
+| 📖 **完全开源** | MIT 协议，可自由使用、修改和商业化 |
 
-> **Requirements:** Python 3.11-3.12, CUDA GPU recommended (also supports MPS / ROCm / Intel XPU / CPU)
-> 
-> **Note:** ROCm on Windows requires Python 3.12 (AMD officially provides Python 3.12 wheels only)
+---
+
+## 🏢 关于我们
+
+### 上海脑舒科技 · SOOTHE
+
+上海脑舒科技有限公司（品牌：**SOOTHE**）是国内领先的医疗级 AI 数字疗愈企业，深耕高增长的身心健康赛道。公司由市北高新孵化成立，在上海经信委、文旅局与静安区人民政府联手打造的上海超高清视听产业集聚区发展成长。
+
+公司核心技术方向为 **脑科学·多模态垂类 AI 大模型** 与软硬件一体化解决方案，立足上海，推进全球化布局，致力于以 AI 赋能解决身心健康服务稀缺与高成本痛点。
+
+### 上海音乐学院 · AI 音乐疗愈重点实验室
+
+上海音乐学院人工智能音乐疗愈重点实验室于 **2024 年 11 月** 正式成立，是国内首个融合 **艺术学·医学·工学** 三大一级学科的交叉重点实验室。
+
+**核心负责人：**
+- 首席专家：廖昌永（上海音乐学院院长）
+- 学术委员会主任：毛颖（复旦大学附属华山医院院长）
+- 实验室主任：刘灏（上海音乐学院）
+
+---
+
+## 🧬 核心技术
+
+### HRV 情绪解码算法（独家）
+
+```
+生理监测 → HRV 情绪解码 → 疗愈方案匹配 → 音乐生成 → 效果验证
+```
+
+- 通过 HRV 心率变异性数据精准判定当前身心状态
+- 依托时域-频域分析识别压力、疲劳等多种身心状态
+- 二维连续环形情绪空间定位，映射音乐十大要素
+- 基于百万级疗愈音乐语料库深度机器学习训练
+- 毫秒级流式交互，综合准确率 **> 92%**
+
+### 夜莺大模型能力
+
+- 基于 ACE-Step 1.5 DiT + LM 混合架构
+- 上海音乐学院权威疗愈音乐语料库 LoRA 深度微调
+- **500+** 疗愈场景智能动态匹配与生成
+- 覆盖十大临床应用场景、24 大生活应用场景
+- 支持 50+ 语言歌词生成与多种音乐风格
+
+---
+
+## 🏥 临床场景
+
+### 十大临床应用场景
+
+| 场景 | 说明 | 推荐参数 |
+|------|------|----------|
+| 😴 高效助眠 | 深度睡眠诱导 | BPM 50, C major, 5min |
+| 😰 舒缓焦虑 | 自然音景放松 | BPM 60, G major, 3min |
+| 🧘 冥想放松 | 颂钵+环境音 | BPM 40, A minor, 10min |
+| 🎯 专注力提升 | Lo-fi + 双耳节拍 | BPM 72, D major, 4min |
+| 💊 止痛镇痛 | 温暖音垫舒缓 | BPM 55, F major, 3min |
+| 🏥 术后恢复 | 柔和管弦乐 | BPM 65, Bb major, 4min |
+| 🤕 头痛/偏头痛 | 低频共振缓解 | BPM 45, Eb major, 5min |
+| 🤢 恶心呕吐 | 稳定节奏安抚 | BPM 58, Ab major, 3min |
+| 😔 抵抗抑郁 | 明亮旋律激励 | BPM 80, D major, 4min |
+| 🫁 缓解鼻塞/止咳 | 呼吸频率引导 | BPM 52, G major, 5min |
+
+### 24 大生活应用场景
+
+心理健康 · 日常健康 · 疼痛类 · 心脑血管 · 睡眠类 · 消化类等全覆盖
+
+---
+
+## ⚡ 快速开始
+
+### 前置要求
+
+- Node.js 18+
+- ACE-Step 1.5 推理服务运行中（提供音乐生成 API）
+
+### 安装与启动
 
 ```bash
-# 1. Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh          # macOS / Linux
-# powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
+# 1. 克隆仓库
+git clone https://github.com/520kisa520/ACE-Step-1.5-Nightingale.git
+cd ACE-Step-1.5-Nightingale
 
-# 2. Clone & install
+# 2. 安装前端依赖
+cd ui/ace-step-ui
+npm install
+
+# 3. 安装并启动后端服务
+cd server
+npm install
+npm run dev &
+
+# 4. 启动前端开发服务器
+cd ..
+npm run dev
+```
+
+打开 http://localhost:3000 即可使用夜莺疗愈音乐生成界面。
+
+### 连接 ACE-Step 推理后端
+
+UI 默认连接 `http://localhost:8001` 的 ACE-Step API 服务。请确保 ACE-Step 推理服务已启动：
+
+```bash
+# 在 ACE-Step 1.5 目录下
 git clone https://github.com/ACE-Step/ACE-Step-1.5.git
 cd ACE-Step-1.5
 uv sync
-
-# 3. Launch Gradio UI (models auto-download on first run)
-uv run acestep
-
-# Or launch REST API server
 uv run acestep-api
 ```
 
-Open http://localhost:7860 (Gradio) or http://localhost:8001 (API).
+---
 
-> 📦 **Windows users:** A [portable package](https://files.acemusic.ai/acemusic/win/ACE-Step-1.5.7z) with pre-installed dependencies is available. See [Installation Guide](./docs/en/INSTALL.md#-windows-portable-package).
+## 📁 项目结构
 
-> 📦 **MacOS users:** A [portable package](https://files.acemusic.ai/acemusic/mac/ACE-Step-1.5.zip) with pre-installed dependencies is available. See [Installation Guide](./docs/en/INSTALL.md#-macos-portable-package).
-
-> 📖 **Full installation guide** (AMD/ROCm, Intel GPU, CPU, environment variables, command-line options): [English](./docs/en/INSTALL.md) | [中文](./docs/zh/INSTALL.md) | [日本語](./docs/ja/INSTALL.md)
-
-### 💡 Which Model Should I Choose?
-
-| Your GPU VRAM | Recommended DiT | Recommended LM Model | Backend | Notes |
-|---------------|----------------|---------------------|---------|-------|
-| **≤6GB** | 2B turbo | None (DiT only) | — | LM disabled by default; INT8 quantization + full CPU offload |
-| **6-8GB** | 2B turbo | `acestep-5Hz-lm-0.6B` | `pt` | Lightweight LM with PyTorch backend |
-| **8-16GB** | 2B turbo/sft | `acestep-5Hz-lm-0.6B` / `1.7B` | `vllm` | 0.6B for 8-12GB, 1.7B for 12-16GB |
-| **16-20GB** | 2B sft or XL turbo | `acestep-5Hz-lm-1.7B` | `vllm` | XL requires CPU offload below 20GB |
-| **20-24GB** | XL turbo/sft | `acestep-5Hz-lm-1.7B` | `vllm` | XL fits without offload; 4B LM available |
-| **≥24GB** | XL sft (or xl-base for extract/lego/complete) | `acestep-5Hz-lm-4B` | `vllm` | Best quality, all models fit without offload |
-
-> **XL (4B) models** (`acestep-v15-xl-*`) offer higher audio quality with ~9GB VRAM for weights (vs ~4.7GB for 2B). They require ≥12GB VRAM (with offload + quantization) or ≥20GB (without offload). All LM models are fully compatible with XL.
-
-The UI automatically selects the best configuration for your GPU. All settings (LM model, backend, offloading, quantization) are tier-aware and pre-configured.
-
-> 📖 GPU compatibility details: [English](./docs/en/GPU_COMPATIBILITY.md) | [中文](./docs/zh/GPU_COMPATIBILITY.md) | [日本語](./docs/ja/GPU_COMPATIBILITY.md) | [한국어](./docs/ko/GPU_COMPATIBILITY.md)
-
-## 🚀 Launch Scripts
-
-Ready-to-use launch scripts for all platforms with auto environment detection, update checking, and dependency installation.
-
-| Platform | Scripts | Backend |
-|----------|---------|---------|
-| **Windows** | `start_gradio_ui.bat`, `start_api_server.bat` | CUDA |
-| **Windows (ROCm)** | `start_gradio_ui_rocm.bat`, `start_api_server_rocm.bat` | AMD ROCm |
-| **Linux** | `start_gradio_ui.sh`, `start_api_server.sh` | CUDA |
-| **macOS** | `start_gradio_ui_macos.sh`, `start_api_server_macos.sh` | MLX (Apple Silicon) |
-
-```bash
-# Windows
-start_gradio_ui.bat
-
-# Linux
-chmod +x start_gradio_ui.sh && ./start_gradio_ui.sh
-
-# macOS (Apple Silicon)
-chmod +x start_gradio_ui_macos.sh && ./start_gradio_ui_macos.sh
+```
+ACE-Step-1.5-Nightingale/
+├── ui/ace-step-ui/          # 夜莺 Web 应用
+│   ├── components/          # React UI 组件
+│   │   ├── CreatePanel.tsx  # 音乐生成面板（临床场景、国风标签）
+│   │   ├── Sidebar.tsx      # 导航侧边栏
+│   │   ├── Player.tsx       # 音频播放器
+│   │   ├── LibraryView.tsx  # 曲库管理
+│   │   ├── SearchPage.tsx   # 搜索页面
+│   │   └── ...
+│   ├── server/              # 后端服务（Express + SQLite）
+│   │   ├── src/
+│   │   │   ├── routes/      # API 路由
+│   │   │   ├── services/    # 业务逻辑
+│   │   │   └── db/          # 数据库
+│   │   └── package.json
+│   ├── context/             # React Context（认证、国际化、主题）
+│   ├── services/            # API 调用服务
+│   ├── i18n/                # 多语言支持
+│   ├── data/                # 疗愈预设数据
+│   ├── App.tsx              # 应用入口
+│   ├── package.json
+│   └── vite.config.ts
+├── .claude/skills/          # AI Agent 技能配置
+├── README.md
+└── LICENSE
 ```
 
-### ⚙️ Customizing Launch Settings
+---
 
-**Recommended:** Create a `.env` file to customize models, ports, and other settings. Your `.env` configuration will survive repository updates.
+## 📊 核心数据
 
-```bash
-# Copy the example file
-cp .env.example .env
+<table align="center">
+<tr>
+<td align="center"><strong>92%+</strong><br>情绪识别准确率</td>
+<td align="center"><strong>500+</strong><br>疗愈场景覆盖</td>
+<td align="center"><strong>+38%</strong><br>HRV 平均改善率</td>
+<td align="center"><strong>10 大</strong><br>临床应用场景</td>
+</tr>
+<tr>
+<td align="center"><strong>百万+</strong><br>疗愈音乐语料库</td>
+<td align="center"><strong>50+</strong><br>支持语言</td>
+<td align="center"><strong>< 2s</strong><br>A100 生成速度</td>
+<td align="center"><strong>< 4GB</strong><br>最低显存需求</td>
+</tr>
+</table>
 
-# Edit with your preferred settings
-# Examples in .env:
-ACESTEP_CONFIG_PATH=acestep-v15-turbo
-ACESTEP_LM_MODEL_PATH=acestep-5Hz-lm-1.7B
-PORT=7860
-LANGUAGE=en
-```
+---
 
-> 📖 **Script configuration & customization:** [English](./docs/en/INSTALL.md#-launch-scripts) | [中文](./docs/zh/INSTALL.md#-启动脚本) | [日本語](./docs/ja/INSTALL.md#-起動スクリプト)
+## 🔬 科研特色
 
-## 📚 Documentation
+- 突破传统心理学边界，将音乐疗愈延伸至神经科学研究层面
+- 推进定制化声音疗愈胶囊与声音脑科学语料库搭建
+- 聚焦艺术嗓音疗愈、术后康复、早产儿脑科学干预、老年身心健康管理等落地场景
+- 成功搭建 **基础研究—设备研发—临床验证—社会服务** 完整产业生态链
+- 运用 AI 技术完成音乐参数智能解析与重组，实现疗愈方案精准化、标准化、可复制
 
-### Usage Guides
+---
 
-| Method | Description | Documentation |
-|--------|-------------|---------------|
-| 🖥️ **Gradio Web UI** | Interactive web interface for music generation | [Guide](./docs/en/GRADIO_GUIDE.md) |
-| 🧭 **UI Support Baseline** | Supported UI boundary and future UI parity checklist | [Guide](./docs/en/UI_SUPPORT.md) |
-| 🎛️ **VST3 Plugin** | Standalone VST3 plugin (C++/GGML) for DAW integration | [acestep.vst3](https://github.com/ace-step/acestep.vst3) |
-| 🐍 **Python API** | Programmatic access for integration | [Guide](./docs/en/INFERENCE.md) |
-| 🌐 **REST API** | HTTP-based async API for services | [Guide](./docs/en/API.md) |
-| ⌨️ **CLI** | Interactive wizard and configuration | [Guide](./docs/en/CLI.md) |
+## 🙏 致谢
 
-### Setup & Configuration
+本项目基于以下开源项目构建：
 
-| Topic | Documentation |
-|-------|---------------|
-| 📦 Installation (all platforms) | [English](./docs/en/INSTALL.md) \| [中文](./docs/zh/INSTALL.md) \| [日本語](./docs/ja/INSTALL.md) |
-| 🎮 GPU Compatibility | [English](./docs/en/GPU_COMPATIBILITY.md) \| [中文](./docs/zh/GPU_COMPATIBILITY.md) \| [日本語](./docs/ja/GPU_COMPATIBILITY.md) |
-| 🔧 GPU Troubleshooting | [English](./docs/en/GPU_TROUBLESHOOTING.md) |
-| 🔬 Benchmark & Profiling | [English](./docs/en/BENCHMARK.md) \| [中文](./docs/zh/BENCHMARK.md) |
+- [ACE-Step 1.5](https://github.com/ACE-Step/ACE-Step-1.5) — 高效开源音乐基础模型（ACE Studio & StepFun）
 
-### Multi-Language Docs
+特别感谢：
+- **上海音乐学院人工智能音乐疗愈重点实验室** — 疗愈音乐语料库与科研支持
+- **上海脑舒科技有限公司（SOOTHE）** — HRV 情绪解码算法与产品化支持
 
-| Language | API | Gradio | Inference | Tutorial | LoRA Training | Install | Benchmark |
-|----------|-----|--------|-----------|----------|---------------|---------|-----------|
-| 🇺🇸 English | [Link](./docs/en/API.md) | [Link](./docs/en/GRADIO_GUIDE.md) | [Link](./docs/en/INFERENCE.md) | [Link](./docs/en/Tutorial.md) | [Link](./docs/en/LoRA_Training_Tutorial.md) | [Link](./docs/en/INSTALL.md) | [Link](./docs/en/BENCHMARK.md) |
-| 🇨🇳 中文 | [Link](./docs/zh/API.md) | [Link](./docs/zh/GRADIO_GUIDE.md) | [Link](./docs/zh/INFERENCE.md) | [Link](./docs/zh/Tutorial.md) | [Link](./docs/zh/LoRA_Training_Tutorial.md) | [Link](./docs/zh/INSTALL.md) | [Link](./docs/zh/BENCHMARK.md) |
-| 🇯🇵 日本語 | [Link](./docs/ja/API.md) | [Link](./docs/ja/GRADIO_GUIDE.md) | [Link](./docs/ja/INFERENCE.md) | [Link](./docs/ja/Tutorial.md) | [Link](./docs/ja/LoRA_Training_Tutorial.md) | [Link](./docs/ja/INSTALL.md) | — |
-| 🇰🇷 한국어 | [Link](./docs/ko/API.md) | [Link](./docs/ko/GRADIO_GUIDE.md) | [Link](./docs/ko/INFERENCE.md) | [Link](./docs/ko/Tutorial.md) | [Link](./docs/ko/LoRA_Training_Tutorial.md) | — | — |
+---
 
-## 📖 Tutorial
+## 📜 许可证
 
-**🎯 Must Read:** Comprehensive guide to ACE-Step 1.5's design philosophy and usage methods.
+本项目基于 [MIT License](./LICENSE) 开源。
 
-| Language | Link |
-|----------|------|
-| 🇺🇸 English | [English Tutorial](./docs/en/Tutorial.md) |
-| 🇨🇳 中文 | [中文教程](./docs/zh/Tutorial.md) |
-| 🇯🇵 日本語 | [日本語チュートリアル](./docs/ja/Tutorial.md) |
-
-This tutorial covers: mental models and design philosophy, model architecture and selection, input control (text and audio), inference hyperparameters, random factors and optimization strategies.
-
-## 🔨 Train
-
-📖 **LoRA Training Tutorial** — step-by-step guide covering data preparation, annotation, preprocessing, and training:
-
-| Language | Link |
-|----------|------|
-| 🇺🇸 English | [LoRA Training Tutorial](./docs/en/LoRA_Training_Tutorial.md) |
-| 🇨🇳 中文 | [LoRA 训练教程](./docs/zh/LoRA_Training_Tutorial.md) |
-| 🇯🇵 日本語 | [LoRA トレーニングチュートリアル](./docs/ja/LoRA_Training_Tutorial.md) |
-| 🇰🇷 한국어 | [LoRA 학습 튜토리얼](./docs/ko/LoRA_Training_Tutorial.md) |
-
-See also the **LoRA Training** tab in Gradio UI for one-click training, or [Gradio Guide - LoRA Training](./docs/en/GRADIO_GUIDE.md#lora-training) for UI reference.
-
-🔧 **Advanced Training with [Side-Step](https://github.com/koda-dernet/Side-Step)** — CLI-based training toolkit with corrected timestep sampling, LoKR adapters, VRAM optimization, gradient sensitivity analysis, and more. See the [Side-Step documentation](./docs/sidestep/Getting%20Started.md).
-
-## 🏗️ Architecture
+---
 
 <p align="center">
-    <img src="./assets/ACE-Step_framework.png" width="100%" alt="ACE-Step Framework">
+    <strong>上海脑舒科技有限公司 · SOOTHE</strong><br>
+    <strong>上海音乐学院人工智能音乐疗愈重点实验室</strong><br>
+    <a href="https://www.soothebci.com">www.soothebci.com</a><br>
+    <em>艺术学 × 医学 × 工学 · 视听疗愈 AI 研究与实践</em><br>
+    2026 年 6 月
 </p>
-
-## 🦁 Model Zoo
-
-<p align="center">
-    <img src="./assets/model_zoo.png" width="100%" alt="Model Zoo">
-</p>
-
-### DiT Models
-
-| DiT Model | Pre-Training | SFT | RL | CFG | Step | Refer audio | Text2Music | Cover | Repaint | Extract | Lego | Complete | Quality | Diversity | Fine-Tunability | Hugging Face |
-|-----------|:------------:|:---:|:--:|:---:|:----:|:-----------:|:----------:|:-----:|:-------:|:-------:|:----:|:--------:|:-------:|:---------:|:---------------:|--------------|
-| `acestep-v15-base` | ✅ | ❌ | ❌ | ✅ | 50 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | Medium | High | Easy | [Link](https://huggingface.co/ACE-Step/acestep-v15-base) |
-| `acestep-v15-sft` | ✅ | ✅ | ❌ | ✅ | 50 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | High | Medium | Easy | [Link](https://huggingface.co/ACE-Step/acestep-v15-sft) |
-| `acestep-v15-turbo` | ✅ | ✅ | ❌ | ❌ | 8 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | Very High | Medium | Medium | [Link](https://huggingface.co/ACE-Step/Ace-Step1.5) |
-
-### XL (4B) DiT Models
-
-> XL models use a larger 4B-parameter DiT decoder (~9GB bf16) for higher audio quality. They require ≥12GB VRAM (with offload + quantization) or ≥20GB (without offload). All LM models are fully compatible.
-
-| DiT Model | Pre-Training | SFT | RL | CFG | Step | Refer audio | Text2Music | Cover | Repaint | Extract | Lego | Complete | Quality | Diversity | Fine-Tunability | Hugging Face |
-|-----------|:------------:|:---:|:--:|:---:|:----:|:-----------:|:----------:|:-----:|:-------:|:-------:|:----:|:--------:|:-------:|:---------:|:---------------:|--------------|
-| `acestep-v15-xl-base` | ✅ | ❌ | ❌ | ✅ | 50 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | High | High | Easy | [Link](https://huggingface.co/ACE-Step/acestep-v15-xl-base) |
-| `acestep-v15-xl-sft` | ✅ | ✅ | ❌ | ✅ | 50 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | Very High | Medium | Easy | [Link](https://huggingface.co/ACE-Step/acestep-v15-xl-sft) |
-| `acestep-v15-xl-turbo` | ✅ | ✅ | ❌ | ❌ | 8 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | Very High | Medium | Medium | [Link](https://huggingface.co/ACE-Step/acestep-v15-xl-turbo) |
-
-### LM Models
-
-| LM Model | Pretrain from | Pre-Training | SFT | RL | CoT metas | Query rewrite | Audio Understanding | Composition Capability | Copy Melody | Hugging Face |
-|----------|---------------|:------------:|:---:|:--:|:---------:|:-------------:|:-------------------:|:----------------------:|:-----------:|--------------|
-| `acestep-5Hz-lm-0.6B` | Qwen3-0.6B | ✅ | ✅ | ✅ | ✅ | ✅ | Medium | Medium | Weak | ✅ |
-| `acestep-5Hz-lm-1.7B` | Qwen3-1.7B | ✅ | ✅ | ✅ | ✅ | ✅ | Medium | Medium | Medium | ✅ |
-| `acestep-5Hz-lm-4B` | Qwen3-4B | ✅ | ✅ | ✅ | ✅ | ✅ | Strong | Strong | Strong | ✅ |
-
-## 🔬 Benchmark
-
-ACE-Step 1.5 includes `profile_inference.py`, a profiling & benchmarking tool that measures LLM, DiT, and VAE timing across devices and configurations.
-
-```bash
-python profile_inference.py                        # Single-run profile
-python profile_inference.py --mode benchmark       # Configuration matrix
-```
-
-> 📖 **Full guide** (all modes, CLI options, output interpretation): [English](./docs/en/BENCHMARK.md) | [中文](./docs/zh/BENCHMARK.md)
-
-## 📜 License & Disclaimer
-
-This project is licensed under [MIT](./LICENSE)
-
-ACE-Step enables original music generation across diverse genres, with applications in creative production, education, and entertainment. While designed to support positive and artistic use cases, we acknowledge potential risks such as unintentional copyright infringement due to stylistic similarity, inappropriate blending of cultural elements, and misuse for generating harmful content. To ensure responsible use, we encourage users to verify the originality of generated works, clearly disclose AI involvement, and obtain appropriate permissions when adapting protected styles or materials. By using ACE-Step, you agree to uphold these principles and respect artistic integrity, cultural diversity, and legal compliance. The authors are not responsible for any misuse of the model, including but not limited to copyright violations, cultural insensitivity, or the generation of harmful content.
-
-🔔 Important Notice  
-The only official website for the ACE-Step project is our GitHub Pages site.    
- We do not operate any other websites.  
-🚫 Fake domains include but are not limited to:
-ac\*\*p.com, a\*\*p.org, a\*\*\*c.org  
-⚠️ Please be cautious. Do not visit, trust, or make payments on any of those sites.
-
-## 🌐 Community & Ecosystem
-
-Check out **[Awesome ACE-Step](https://github.com/ace-step/awesome-ace-step)** — a curated list of community projects, alternative UIs, ComfyUI nodes, cloud deployments, training tools, and more built around ACE-Step.
-
-## 🙏 Acknowledgements
-
-This project is co-led by ACE Studio and StepFun.
-
-
-## 📖 Citation
-
-If you find this project useful for your research, please consider citing:
-
-```BibTeX
-@misc{gong2026acestep,
-	title={ACE-Step 1.5: Pushing the Boundaries of Open-Source Music Generation},
-	author={Junmin Gong, Yulin Song, Wenxiao Zhao, Sen Wang, Shengyuan Xu, Jing Guo}, 
-	howpublished={\url{https://github.com/ace-step/ACE-Step-1.5}},
-	year={2026},
-	note={GitHub repository}
-}
-```
