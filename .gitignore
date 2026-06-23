@@ -244,20 +244,26 @@ gradio_outputs/
 acestep/third_parts/vllm/
 test_lora_scale_fix.py
 lokr_output/
-.claude/skills/acestep/scripts/config.json
-.claude/skills/acestep/scripts/.first_gen_done
-.claude/skills/acestep-simplemv/scripts/public/
-.claude/scheduled_tasks.lock
-.claude/worktrees/
 config.json
 
 acestep_output/
 # macOS
 .DS_Store
 
-# VitePress / Node
+# Node.js / UI
 node_modules/
-docs/.vitepress/dist/
-docs/.vitepress/cache/
-docs/en/awesome.md
-package-lock.json
+*.tsbuildinfo
+vite.config.ts.timestamp-*
+
+# Database (UI backend)
+*.sqlite
+*.sqlite3
+*.db
+
+# Audio output
+uploads/
+public/audio/
+
+# IDE
+.vscode/
+.idea/
