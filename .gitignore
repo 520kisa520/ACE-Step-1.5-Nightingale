@@ -111,8 +111,6 @@ ipython_config.py
 # UV
 #   uv.lock is tracked — needed for reproducible builds (Docker, CI).
 # uv.lock
-.uv-cache/
-.uv-python/
 
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
