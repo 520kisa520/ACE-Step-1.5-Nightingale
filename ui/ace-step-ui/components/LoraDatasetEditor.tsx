@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { 
   Play, Pause, Upload, Download, Plus, Trash2, Edit3, 
   Save, Music2, Hash, Sliders, ChevronDown, ChevronUp,
-  FileAudio, Tag, Heart, Zap
+  FileAudio, Tag, Heart, Zap, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import { GlassCard } from './ui/GlassCard';
 
@@ -51,6 +51,8 @@ const SCENES = [
   'spa', 'nature', 'rain', 'forest', 'ocean', 'mountain'
 ];
 
+const API_BASE = '';
+
 export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
   samples = [],
   onSamplesChange,
@@ -58,7 +60,86 @@ export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [generatingCaption, setGeneratingCaption] = useState<string | null>(null);
+  const [batchGenerating, setBatchGenerating] = useState(false);
+  const [llmStatus, setLlmStatus] = useState<'unknown' | 'available' | 'unavailable'>('unknown');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const checkLLMStatus = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/llm/health`);
+      const data = await res.json();
+      setLlmStatus(data.available ? 'available' : 'unavailable');
+    } catch {
+      setLlmStatus('unavailable');
+    }
+  }, []);
+
+  React.useEffect(() => { checkLLMStatus(); }, [checkLLMStatus]);
+
+  const handleGenerateCaption = async (sampleId: string) => {
+    const sample = samples.find(s => s.id === sampleId);
+    if (!sample) return;
+    setGeneratingCaption(sampleId);
+    try {
+      const res = await fetch(`${API_BASE}/api/llm/caption`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: sample.filename,
+          emotionTags: sample.emotionTags,
+          instrumentTags: sample.instrumentTags,
+          bpm: sample.bpm,
+          keyScale: sample.keyScale,
+          timeSignature: sample.timeSignature,
+          scene: sample.scene,
+          existingCaption: sample.caption,
+        }),
+      });
+      const data = await res.json();
+      if (data.caption) {
+        handleUpdateSample(sampleId, { caption: data.caption });
+      }
+    } catch (error) {
+      console.error('Caption generation failed:', error);
+    } finally {
+      setGeneratingCaption(null);
+    }
+  };
+
+  const handleBatchGenerateCaptions = async () => {
+    if (samples.length === 0) return;
+    setBatchGenerating(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/llm/caption/batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          samples: samples.map(s => ({
+            id: s.id,
+            filename: s.filename,
+            emotionTags: s.emotionTags,
+            instrumentTags: s.instrumentTags,
+            bpm: s.bpm,
+            keyScale: s.keyScale,
+            scene: s.scene,
+          })),
+        }),
+      });
+      const data = await res.json();
+      if (data.results) {
+        const updated = samples.map(s => {
+          const match = data.results.find((r: { id: string; caption: string }) => r.id === s.id);
+          return match ? { ...s, caption: match.caption } : s;
+        });
+        onSamplesChange?.(updated);
+      }
+    } catch (error) {
+      console.error('Batch caption generation failed:', error);
+    } finally {
+      setBatchGenerating(false);
+    }
+  };
 
   const handleAddSample = () => {
     const newSample: DatasetSample = {
@@ -176,6 +257,15 @@ export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
               导出 JSON
             </button>
             <button
+              onClick={handleBatchGenerateCaptions}
+              disabled={batchGenerating || llmStatus !== 'available' || samples.length === 0}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed"
+              title={llmStatus !== 'available' ? 'Qwen LLM 服务未连接' : '为所有样本批量生成 Caption'}
+            >
+              {batchGenerating ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+              {batchGenerating ? '生成中...' : '批量生成 Caption'}
+            </button>
+            <button
               onClick={handleAddSample}
               className="px-3 py-1.5 rounded-lg text-xs font-medium bg-tech-primary text-white hover:bg-tech-primary-dark transition-colors flex items-center gap-1"
             >
@@ -183,6 +273,17 @@ export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
               添加样本
             </button>
           </div>
+        </div>
+
+        {/* LLM Status Indicator */}
+        <div className="flex items-center gap-2 mb-4 px-1">
+          <div className={`w-2 h-2 rounded-full ${llmStatus === 'available' ? 'bg-green-500' : llmStatus === 'unavailable' ? 'bg-red-500' : 'bg-yellow-500'}`} />
+          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            {llmStatus === 'available' ? 'Qwen LLM 已连接' : llmStatus === 'unavailable' ? 'Qwen LLM 未连接 (localhost:8000)' : '检测 LLM 状态...'}
+          </span>
+          {llmStatus === 'unavailable' && (
+            <button onClick={checkLLMStatus} className="text-xs text-tech-primary hover:underline">重试</button>
+          )}
         </div>
 
         {/* Samples List */}
@@ -268,13 +369,28 @@ export const LoraDatasetEditor: React.FC<LoraDatasetEditorProps> = ({
 
                   {/* Caption Input */}
                   <div>
-                    <label className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2 block">
-                      Caption 描述
-                    </label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                        Caption 描述
+                      </label>
+                      <button
+                        onClick={() => handleGenerateCaption(sample.id)}
+                        disabled={generatingCaption === sample.id || llmStatus !== 'available'}
+                        className="px-2 py-1 rounded-md text-xs font-medium bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 transition-colors flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed"
+                        title={llmStatus !== 'available' ? 'Qwen LLM 未连接' : '使用 Qwen AI 自动生成 Caption'}
+                      >
+                        {generatingCaption === sample.id ? (
+                          <Loader2 size={12} className="animate-spin" />
+                        ) : (
+                          <Sparkles size={12} />
+                        )}
+                        {generatingCaption === sample.id ? '生成中...' : 'AI 生成'}
+                      </button>
+                    </div>
                     <textarea
                       value={sample.caption}
                       onChange={(e) => handleUpdateSample(sample.id, { caption: e.target.value })}
-                      placeholder="输入音频描述..."
+                      placeholder="输入音频描述，或点击 AI 生成自动创建..."
                       className="w-full h-20 p-3 rounded-xl border border-healing-primary/20 bg-white/50 dark:bg-healing-bg-card/50 text-sm text-zinc-900 dark:text-healing-text-primary placeholder-zinc-400 focus:outline-none focus:border-healing-primary resize-none"
                     />
                   </div>
