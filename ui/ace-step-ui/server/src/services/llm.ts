@@ -10,7 +10,7 @@ interface LLMResponse {
   usage?: { prompt_tokens: number; completion_tokens: number; total_tokens: number };
 }
 
-const HEALING_CAPTION_SYSTEM_PROMPT = `你是一位专业的音乐疗愈标注专家，隶属于上海音乐学院人工智能音乐疗愈重点实验室。
+const HEALING_CAPTION_SYSTEM_PROMPT = `你是一位专业的音乐疗愈标注专家，隶属于上海脑舒科技（SOOTHE）。
 你的任务是为疗愈音乐生成标准化的 caption（风格描述），用于 LoRA 微调训练数据集。
 
 生成的 caption 必须遵循 ACE-Step 的标签格式，包含以下要素：
