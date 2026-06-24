@@ -21,6 +21,14 @@ export const config = {
     apiUrl: process.env.ACESTEP_API_URL || 'http://localhost:8001',
   },
 
+  // LLM API (Qwen via vLLM OpenAI-compatible endpoint)
+  llm: {
+    baseUrl: process.env.LLM_BASE_URL || 'http://localhost:8000/v1',
+    apiKey: process.env.LLM_API_KEY || 'EMPTY',
+    model: process.env.LLM_MODEL || 'Qwen/Qwen3.6-35B-A3B-FP8',
+    maxTokens: parseInt(process.env.LLM_MAX_TOKENS || '1024', 10),
+  },
+
   // Pexels (optional - for video backgrounds)
   pexels: {
     apiKey: process.env.PEXELS_API_KEY || '',
