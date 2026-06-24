@@ -45,9 +45,9 @@ export const translations = {
     // Sidebar
     aceStepUI: 'Nightingale Lab',
     brandProductName: 'Nightingale',
-    labFullName: 'Shanghai Conservatory of Music · AI Music Therapy Key Laboratory',
-    labShortName: 'SHCM · AI Music Therapy Lab',
-    labTagline: 'Arts × Medicine × Engineering — Audiovisual Healing AI Platform',
+    labFullName: 'Shanghai Soothe BCI · SOOTHE',
+    labShortName: 'SOOTHE · Healing AI',
+    labTagline: 'Neuroscience × AI × Digital Healing Platform',
     collapseSidebar: 'Collapse Sidebar',
     expandSidebar: 'Expand Sidebar',
 
@@ -648,9 +648,9 @@ export const translations = {
     // Sidebar
     aceStepUI: '夜莺工坊',
     brandProductName: '夜莺',
-    labFullName: '上海音乐学院人工智能音乐疗愈重点实验室',
-    labShortName: '上音 · AI音乐疗愈实验室',
-    labTagline: '艺术学 × 医学 × 工学 · 视听疗愈 AI 研究与实践平台',
+    labFullName: '上海脑舒科技 · SOOTHE',
+    labShortName: 'SOOTHE · 视听疗愈 AI',
+    labTagline: '脑科学 × AI × 数字疗愈平台',
     collapseSidebar: '收起侧边栏',
     expandSidebar: '展开侧边栏',
 
@@ -1251,9 +1251,9 @@ export const translations = {
     // Sidebar
     aceStepUI: 'ナイチンゲール',
     brandProductName: 'ナイチンゲール',
-    labFullName: '上海音乐学院人工智能音乐疗愈重点实验室',
-    labShortName: '上音 · AI音楽療法实验室',
-    labTagline: '芸術 × 医学 × 工学 — 視聴療法AIプラットフォーム',
+    labFullName: '上海脑舒科技 · SOOTHE',
+    labShortName: 'SOOTHE · ヒーリングAI',
+    labTagline: '脳科学 × AI × デジタルヒーリングプラットフォーム',
     collapseSidebar: 'サイドバーを折りたたむ',
     expandSidebar: 'サイドバーを展開',
 
@@ -1854,9 +1854,9 @@ export const translations = {
     // Sidebar
     aceStepUI: '나이팅게일',
     brandProductName: '나이팅게일',
-    labFullName: '上海音乐学院人工智能音乐疗愈重点实验室',
-    labShortName: '上音 · AI음악치료实验室',
-    labTagline: '예술 × 의학 × 공학 — 시청각 치유 AI 플랫폼',
+    labFullName: '上海脑舒科技 · SOOTHE',
+    labShortName: 'SOOTHE · 힐링 AI',
+    labTagline: '뇌과학 × AI × 디지털 힐링 플랫폼',
     collapseSidebar: '사이드바 접기',
     expandSidebar: '사이드바 펼치기',
 
