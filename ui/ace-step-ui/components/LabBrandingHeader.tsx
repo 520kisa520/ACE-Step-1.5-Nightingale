@@ -34,16 +34,16 @@ export const LabBrandingHeader: React.FC<LabBrandingHeaderProps> = ({
           {!compact && (
             <>
               <p className="text-xs md:text-sm text-healing-text-secondary dark:text-tech-text-secondary font-medium mt-0.5 leading-snug">
-                上海音乐学院人工智能音乐疗愈重点实验室
+                上海脑舒科技 · SOOTHE
               </p>
               <p className="text-[11px] text-healing-text-muted dark:text-tech-text-muted mt-1 leading-relaxed">
-                艺术学 × 医学 × 工学 · 视听疗愈 AI 研究与实践平台
+                脑科学 × AI × 数字疗愈平台
               </p>
             </>
           )}
           {compact && (
             <p className="text-[11px] text-healing-text-muted dark:text-tech-text-muted mt-0.5 truncate">
-              上海音乐学院人工智能音乐疗愈重点实验室
+              上海脑舒科技 · SOOTHE
             </p>
           )}
         </div>
